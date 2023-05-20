@@ -21,7 +21,11 @@ configfile: 'config.yaml'
 # run "quick" rules locally:
 localrules: make_dag,
             make_summary,
-            save_pinned_env
+            save_pinned_env,
+            get_ccs,
+            get_BA2_bc_lookup,
+            get_mut_antibody_escape,
+            get_mut_bind_expr
 
 # Functions -------------------------------------------------------------------
 def nb_markdown(nb):
@@ -153,7 +157,6 @@ rule epistatic_shifts:
     input:
         config['final_variant_scores_mut_file'],
         config['mut_antibody_escape'],
-        config['mut_clade_occurrence'],
     output:
         config['JSD_file'],
         config['JSD_expr_file'],

@@ -1,0 +1,90 @@
+# config for analysis
+
+# most CPUs to ever use at once
+max_cpus: 8
+
+# amplicons sequenced by PacBio
+amplicons_BA2: data/PacBio_amplicon_BA2.gb
+amplicons_BQ11: data/PacBio_amplicon_BQ11.gb
+amplicons_XBB15: data/PacBio_amplicon_XBB15.gb
+
+# how to parse the amplicon
+feature_parse_specs_BA2: data/feature_parse_specs_BA2.yaml
+feature_parse_specs_BQ11: data/feature_parse_specs_BQ11.yaml
+feature_parse_specs_XBB15: data/feature_parse_specs_XBB15.yaml
+
+# do we get the sequencing data from locally on our server versus SRA?
+seqdata_source: local
+
+# list of PacBio sequencing runs linking barcodes to variants
+pacbio_runs: data/PacBio_runs.csv
+
+# list of Illumina sequencing runs of barcodes
+barcode_runs: data/barcode_runs.csv
+
+# wildtype sequence of mutagenized gene
+wildtype_sequence: data/wildtype_sequence.fasta
+site_number_offset: 330  # add this to sequential sites to get RBD numbering
+
+# pdbs for mapping, analysis
+pdb_6m0j: data/6m0j.pdb
+
+# URLs from which we download binding & expression of mutants & variants and surveillance count data
+mut_bind_expr_url: https://media.githubusercontent.com/media/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/main/results/final_variant_scores/final_variant_scores.csv
+mut_antibody_escape_url: https://media.githubusercontent.com/media/jbloomlab/SARS2_RBD_Ab_escape_maps/main/processed_data/escape_data.csv
+codon_variant_table_file_BA2_url: https://media.githubusercontent.com/media/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/main/results/variants/codon_variant_table_BA2.csv
+
+
+# output directories / files
+summary_dir: results/summary
+mut_bind_expr: results/prior_DMS_data/mutant_ACE2binding_expression.csv
+mut_antibody_escape: results/prior_DMS_data/mutant_antibody-escape.csv
+mut_clade_occurrence: results/prior_DMS_data/mutant_clade_occurrence.csv
+codon_variant_table_file_BA2: results/prior_DMS_data/codon_variant_table_BA2.csv
+figs_dir: results/figures
+ccs_dir: results/ccs
+process_ccs_dir: results/process_ccs
+processed_ccs_file_BQ11: results/process_ccs/processed_ccs_BQ11.csv
+processed_ccs_file_XBB15: results/process_ccs/processed_ccs_XBB15.csv
+variants_dir: results/variants
+nt_variant_table_file_BQ11: results/variants/nucleotide_variant_table_BQ11.csv
+nt_variant_table_file_XBB15: results/variants/nucleotide_variant_table_XBB15.csv
+codon_variant_table_file_BQ11: results/variants/codon_variant_table_BQ11.csv
+codon_variant_table_file_XBB15: results/variants/codon_variant_table_XBB15.csv
+counts_dir: results/counts
+variant_counts_file: results/counts/variant_counts.csv
+expression_sortseq_dir: results/expression_meanF
+expression_sortseq_file: results/expression_meanF/bc_expression.csv
+Titeseq_Kds_dir: results/binding_Kd
+Titeseq_Kds_file: results/binding_Kd/bc_binding.csv
+final_variant_scores_dir: results/final_variant_scores
+final_variant_scores_mut_file: results/final_variant_scores/final_variant_scores.csv
+epistatic_shifts_dir: results/epistatic_shifts
+JSD_file: results/epistatic_shifts/JSD_by_target.csv
+JSD_expr_file: results/epistatic_shifts/JSD_EXPRESSION_by_target.csv
+visualization_dir: docs/_includes
+
+
+# parameters for running PacBio `ccs` program
+min_ccs_accuracy: 0.999
+min_ccs_passes: 3
+min_ccs_length: 50
+max_ccs_length: 5000
+
+# max error rate in gene / barcode CCSs retained for consensu building
+max_error_rate: 0.0001
+
+# Parameters for processing Illumina barcodes, assuming this structure:
+#  [R2 binds] - [upstream] - [barcode] - [downstream] - [R1 binds]
+#  This orientation is hard-wired in the barcode parser, but here it is opposite
+#  Therefore, supplied the "downstream" sequence as reverse complemented upstream
+# Passed to `dms_variants.illuminabarcodeparser.IlluminaBarcodeParser`:
+illumina_barcode_parser_params:
+  upstream: GGCCGC
+  downstream: ''
+  minq: 20
+  upstream_mismatch: 1
+  downstream_mismatch: 0
+
+# Input files for analyses from the data subdirectory
+RBD_sites: data/RBD_sites.csv

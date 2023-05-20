@@ -72,7 +72,7 @@ min_ccs_length: 50
 max_ccs_length: 5000
 
 # max error rate in gene / barcode CCSs retained for consensu building
-max_error_rate: 0.0001
+max_error_rate: 0.00001
 
 # Parameters for processing Illumina barcodes, assuming this structure:
 #  [R2 binds] - [upstream] - [barcode] - [downstream] - [R1 binds]

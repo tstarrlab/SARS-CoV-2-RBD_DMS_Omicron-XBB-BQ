@@ -50,6 +50,7 @@ rule make_summary:
     """Create Markdown summary of analysis."""
     input:
         dag=os.path.join(config['summary_dir'], 'dag.svg'),
+        env='environment_pinned.yml',
         get_mut_bind_expr=config['mut_bind_expr'],
         get_mut_antibody_escape=config['mut_antibody_escape'],
         process_ccs_XBB15=nb_markdown('process_ccs_XBB15.ipynb'),

@@ -72,9 +72,6 @@ dt <- dt[duplicate==FALSE,]; dt[,duplicate:=NULL]
 
 dt <- merge(counts, dt, by=c("library","barcode")); rm(dt_BQ11);rm(dt_XBB15);rm(dt_BA2);rm(counts); rm(duplicates)
 
-#append replicate identifier to the library name
-dt[,library:=paste(library,replicate,sep=""),by=c("library","replicate")];dt[,replicate:=NULL]
-
 #make tables giving names of Titeseq samples and the corresponding ACE2 incubation concentrations
 samples_TiteSeq <- data.frame(sample=unique(paste(barcode_runs[barcode_runs$sample_type=="TiteSeq","sample_type"],formatC(barcode_runs[barcode_runs$sample_type=="TiteSeq","concentration"], width=2,flag="0"),sep="_")),conc=c(10^-6, 10^-7, 10^-8, 10^-9, 10^-10, 10^-11, 10^-12, 10^-13,0))
 
@@ -85,7 +82,7 @@ samples_TiteSeq <- data.frame(sample=unique(paste(barcode_runs[barcode_runs$samp
 ```{r downweight_counts_by_cells}
 #for each bin, normalize the read counts to the observed ratio of cell recovery among bins
 for(i in 1:nrow(barcode_runs)){
-  lib <- paste(as.character(barcode_runs$library[i]), as.character(barcode_runs$replicate[i]), sep="")
+  lib <- as.character(barcode_runs$library[i])
   bin <- as.character(barcode_runs$sample[i])
   ratio <- sum(dt[library==lib & sample==bin,"count"])/barcode_runs$number_cells[i]
   if(ratio<1){ #if there are fewer reads from a FACS bin than cells sorted
@@ -116,7 +113,7 @@ Next, for each barcode at each of the ACE2 concentrations, calculate the "mean b
 We do not use the fluorescence boundaries of the FACS bins in our calculations here, but we provide them for posterity's sake below. For the library titration sorts, the fluorescence boundaries for bins 1-4 are as follows:
 
 ```
-(-288, 254), (255, 1633), (1634, 10348), (10349, 262143)
+()
 ```
 
 ```{r calculate_mean_bin}
@@ -189,7 +186,7 @@ fit.titration <- function(y.vals,x.vals,count.vals,min.cfu=cutoff,
 }
 
 #fit titration to huACE2 Titeseq data for each barcode
-dt[,c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
+dt[library=="pool1",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
      tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
                                      TiteSeq_05_meanbin,TiteSeq_06_meanbin,TiteSeq_07_meanbin,TiteSeq_08_meanbin,
                                      TiteSeq_09_meanbin),
@@ -198,28 +195,38 @@ dt[,c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
                                          TiteSeq_05_totalcount,TiteSeq_06_totalcount,TiteSeq_07_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
               error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
 
+#temp fit pool2 without the underseampled bin1 samples?
+dt[library=="pool2",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
+     tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
+                                     TiteSeq_05_meanbin,TiteSeq_08_meanbin,
+                                     TiteSeq_09_meanbin),
+                            x.vals=samples_TiteSeq$conc[c(1,2,3,4,5,8,9)],
+                            count.vals=c(TiteSeq_01_totalcount,TiteSeq_02_totalcount,TiteSeq_03_totalcount,TiteSeq_04_totalcount,
+                                         TiteSeq_05_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
+              error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
+
 ```
 ## QC and sanity checks
 We will do some QC to make sure we got good titration curves for most of our library barcodes. We will also spot check titration curves from across our measurement range, and spot check curves whose fit parameters hit the different boundary conditions of the fit variables.
 
-We successfully generated *K*<sub>D</sub> estimates for `r sum(!is.na(dt[library=="pool1A",Kd_ACE2]))` of our pool1A barcodes (`r round(sum(!is.na(dt[library=="pool1A",Kd_ACE2]))/nrow(dt[library=="pool1A",])*100,digits=2)`%), and `r sum(!is.na(dt[library=="pool2A",Kd_ACE2]))` of our pool2A barcodes (`r round(sum(!is.na(dt[library=="pool2A",Kd_ACE2]))/nrow(dt[library=="pool2A",])*100,digits=2)`%). 
+We successfully generated *K*<sub>D</sub> estimates for `r sum(!is.na(dt[library=="pool1",Kd_ACE2]))` of our pool1 barcodes (`r round(sum(!is.na(dt[library=="pool1",Kd_ACE2]))/nrow(dt[library=="pool1",])*100,digits=2)`%), and `r sum(!is.na(dt[library=="pool2",Kd_ACE2]))` of our pool2 barcodes (`r round(sum(!is.na(dt[library=="pool2",Kd_ACE2]))/nrow(dt[library=="pool2",])*100,digits=2)`%). 
 
 
 Why were estimates not returned for some barcodes? The histograms below show that many barcodes with unsuccessful titration fits have lower average cell counts and more concentrations with fewer than the minimum cutoff number of cells (cutoff=`r cutoff`) than those that were fit. Therefore, we can see the the majority of unfit barcodes come from our minimum read cutoffs, meaning there weren't too many curves that failed to be fit for issues such as nls convergence.
 
 ```{r avgcount, fig.width=8, fig.height=8, fig.align="center",dpi=300,dev="png"}
 par(mfrow=c(2,2))
-hist(log10(dt[library=="pool1A" & !is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,xlim=c(0,5),main="pool1A",col="gray50",xlab="average cell count across concentration samples")
-hist(log10(dt[library=="pool1A" & is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,add=T,col="red")
+hist(log10(dt[library=="pool1" & !is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,xlim=c(0,5),main="pool1",col="gray50",xlab="average cell count across concentration samples")
+hist(log10(dt[library=="pool1" & is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,add=T,col="red")
 
-hist(log10(dt[library=="pool2A" & !is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,xlim=c(0,5),main="pool2A",col="gray50",xlab="average cell count across concentration samples")
-hist(log10(dt[library=="pool2A" & is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,add=T,col="red")
+hist(log10(dt[library=="pool2" & !is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,xlim=c(0,5),main="pool2",col="gray50",xlab="average cell count across concentration samples")
+hist(log10(dt[library=="pool2" & is.na(Kd_ACE2),TiteSeq_avgcount]+0.5),breaks=20,add=T,col="red")
 
-hist(dt[library=="pool1A" & !is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=5,main="pool1A",col="gray50",xlab="number of sample concentrations below cutoff cell number",xlim=c(0,10))
-hist(dt[library=="pool1A" & is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=16,add=T,col="red")
+hist(dt[library=="pool1" & !is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=5,main="pool1",col="gray50",xlab="number of sample concentrations below cutoff cell number",xlim=c(0,10))
+hist(dt[library=="pool1" & is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=16,add=T,col="red")
 
-hist(dt[library=="pool2A" & !is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=5,main="pool2A",col="gray50",xlab="number of sample concentrations below cutoff cell number",xlim=c(0,10))
-hist(dt[library=="pool2A" & is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=16,add=T,col="red")
+hist(dt[library=="pool2" & !is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=5,main="pool2",col="gray50",xlab="number of sample concentrations below cutoff cell number",xlim=c(0,10))
+hist(dt[library=="pool2" & is.na(Kd_ACE2),TiteSeq_min_cell_filtered],breaks=16,add=T,col="red")
 ```
 
 Let's checkout what the data looks like for some curves that didn't converge on a titration fit, different cutoffs, boudnary conditions, etc. I define a function that take a row from the data table and plots the meanbin estimates and the fit titration curve (if converged). This allows for quick and easy troubleshooting and spot-checking of curves.
@@ -287,70 +294,70 @@ First, curves with *K*<sub>D,app</sub> fixed at the 10<sup>-5</sup> maximum. We 
 
 ```{r 1e-5_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 9e-6)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 9e-6)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 9e-6)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 9e-6)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 9e-6)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 9e-6)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 9e-6)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 9e-6)[2])
 ```
 
 Next, with *K*<sub>D,app</sub> around 10<sup>-6</sup>
 
 ```{r 1e-6_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-6 & dt$Kd_ACE2 < 1.2e-6)[2])
 ```
 
 With *K*<sub>D,app</sub> around 10<sup>-7</sup>, we seem to be picking up more consistent binding signals, though there are some noisy curves.
 
 ```{r 1e-7_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-7 & dt$Kd_ACE2 < 1.2e-7)[2])
 ```
 
 At *K*<sub>D,app</sub> of 10<sup>-8</sup>, we are likewise picking up some signal, perhaps a bit less noise than the -8 curves
 
 ```{r 1e-8_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-8 & dt$Kd_ACE2 < 1.2e-8)[2])
 ```
 
 Same at *K*<sub>D,app</sub> of 10<sup>-9</sup>.
 
 ```{r 1e-9_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-9 & dt$Kd_ACE2 < 1.2e-9)[2])
 ```
 
 *K*<sub>D,app</sub> of 10<sup>-10</sup>
 
 ```{r 1e-10_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-10 & dt$Kd_ACE2 < 1.2e-10)[2])
 ```
 
 *K*<sub>D,app</sub> ~ 10<sup>-11</sup>. This is higher affinity than the main bulk of curves.
 
 ```{r 1e-11_Kd, fig.width=8, fig.height=8, fig.align="center",dpi=300, warning=FALSE, results=FALSE,dev="png"}
 par(mfrow=c(2,2))
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[1])
-plot.titration(which(dt$library=="pool1A" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[2])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[1])
-plot.titration(which(dt$library=="pool2A" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[2])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[1])
+plot.titration(which(dt$library=="pool1" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[2])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[1])
+plot.titration(which(dt$library=="pool2" & dt$Kd_ACE2 > 1e-11 & dt$Kd_ACE2 < 2e-11)[2])
 ```
 
 ## Data filtering by fit quality
@@ -362,7 +369,7 @@ Look at nMSR metric versus avgcoutn value, and layer on value of nMSR filtering 
 
 ```{r nMSR_v_cell_count, fig.width=8, fig.height=8, fig.align="center",dpi=300,dev="png"}
 median.nMSR <- median(dt$nMSR_ACE2,na.rm=T)
-threshold <- 40
+threshold <- 30
 par(mfrow=c(2,2))
 for(bg in c("BQ11","XBB15","BA2")){
   plot(log10(dt[target==bg,TiteSeq_avgcount]),dt[target==bg,nMSR_ACE2],main=bg,pch=19,col="#00000010",xlab="average cell count (log10)",ylab="nMSR",xlim=c(0,6),ylim=c(0,0.5))

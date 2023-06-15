@@ -207,40 +207,54 @@ plot_scatter <- function(site, bg1, bg2, JSD=F, JSD_min3bc=T, JSD_min5bc=F,n_bc_
 
 ```
 
-```{r scatters_BA1_diffs, echo=T, fig.width=9, fig.height=12, fig.align="center", dpi=300,dev="png"}
-par(mfrow=c(4,3))
-plot_scatter(site=403,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=406,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=439,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=449,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=453,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=455,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=493,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=494,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=496,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=498,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=501,"Wuhan-Hu-1_v2","Omicron_BA1")
-plot_scatter(site=505,"Wuhan-Hu-1_v2","Omicron_BA1")
+```{r scatters_BQ11_diffs, echo=T, fig.width=12, fig.height=15, fig.align="center", dpi=300,dev="png"}
+par(mfrow=c(5,4))
+plot_scatter(site=342,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=355,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=379,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=380,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=399,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=405,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=406,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=412,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=433,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=449,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=453,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=455,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=456,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=486,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=487,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=492,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=493,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=494,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=498,"Omicron_BA2_d","Omicron_BQ11_d")
 
-invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_BA1_shifts.pdf",sep=""),useDingbats=F))
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_BQ11-v-BA2_shifts.pdf",sep=""),useDingbats=F))
 ```
 
-```{r scatters_BA2_diffs, echo=T, fig.width=9, fig.height=12, fig.align="center", dpi=300,dev="png"}
-par(mfrow=c(4,3))
-plot_scatter(site=403,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=406,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=439,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=449,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=453,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=455,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=493,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=494,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=496,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=498,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=501,"Wuhan-Hu-1_v2","Omicron_BA2")
-plot_scatter(site=505,"Wuhan-Hu-1_v2","Omicron_BA2")
+```{r scatters_XBB15_diffs, echo=T, fig.width=12, fig.height=15, fig.align="center", dpi=300,dev="png"}
+par(mfrow=c(5,4))
+plot_scatter(site=342,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=355,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=379,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=380,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=399,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=405,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=406,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=412,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=433,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=449,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=453,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=455,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=456,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=486,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=487,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=492,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=493,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=494,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=498,"Omicron_BA2_d","Omicron_XBB15_d")
 
-invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_BA2_shifts.pdf",sep=""),useDingbats=F))
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_XBB15-v-BA2_shifts.pdf",sep=""),useDingbats=F))
 ```
 
 ## Line plots of JS divergence from WH1 across RBD sites
@@ -290,7 +304,7 @@ ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
   theme_classic()+
   scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1")+
+  ylab("JS divergence versus Omicron BA.2")+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc.pdf",sep=""),useDingbats=F))
@@ -305,7 +319,7 @@ ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
   theme_classic()+
   scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1")+
+  ylab("JS divergence versus Omicron BA.2")+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")+
   facet_wrap(~bg_2,ncol=1)
   
@@ -323,7 +337,7 @@ ggplot(data=temp[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","
   theme_classic()+
   scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1")+
+  ylab("JS divergence versus Omicron BA.2")+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc_Omi-reduced.pdf",sep=""),useDingbats=F))
@@ -339,7 +353,7 @@ ggplot(data=temp[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","
   theme_classic()+
   scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
   theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1")+
+  ylab("JS divergence versus Omicron BA.2")+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.1)),as.character(site),'')),size=3,color="gray40")+
   facet_wrap(~bg_2,ncol=1)
 

@@ -5,6 +5,7 @@ permalink: /RBD-heatmaps/
 
 ---
 
+**NOTE: data for Omicron XBB.1.5 and BQ.1.1 are preliminary and _will_ change at least one more time with more sequencing depth**
 
 ### Overview
 
@@ -18,8 +19,8 @@ To use this tool, select the RBD variants that you wish to display in each heatm
 
 The impact on ACE2 receptor-binding affinity ($$\Delta$$ log10 $$K_D$$) or RBD expression ($$\Delta$$ log(MFI)) of every single amino-acid mutation in SARS-CoV-2 RBDs, as determined by high-throughput titration assays. Wildtype amino acids are indicated by an 'x', and gray squares indicate missing mutations from each library. The number of internally replicated barcodes with which a mutation was measured is visible as `Barcode Count` in the tooltips, where higher numbers indicate higher-confidence measurements. The experiments underlying these data can be found in our preprint [here](https://www.biorxiv.org/content/10.1101/2022.09.20.508745v1).
 
-Data labeled "v1" (Alpha, Beta, Delta, Eta, and associated Wuhan-Hu-1 v1 measurements) are from a previously published study described [here](https://www.science.org/doi/10.1126/science.abo7896). The Wuhan-Hu-1 library was also spiked into the Omicron BA.1 and BA.2 libraries in a separate experiment. Although each Wuhan-Hu-1 dataset is closely correlated, it is most appropriate to compare each variant dataset to its matched Wuhan-Hu-1 dataset due to internal control.
+Data for variants from Wuhan-Hu-1 through Omicron BA.2 are from previously published studies [here](https://www.science.org/doi/10.1126/science.abo7896) and [here](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010951).
 
 ### Data
 
-Raw data  can be found [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/blob/main/results/final_variant_scores/final_variant_scores.csv). The code used to make these plots can be found [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/blob/main/RBD-Heatmaps-Interactive-Visualization.ipynb).
+Raw data  can be found [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/final_variant_scores/final_variant_scores.csv). The code used to make these plots can be found [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/RBD-Heatmaps-Interactive-Visualization.ipynb).

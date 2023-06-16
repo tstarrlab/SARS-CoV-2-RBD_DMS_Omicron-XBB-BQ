@@ -114,13 +114,6 @@ DMS datasets.
 ``` r
 dt <- data.table(read.csv(file=config$final_variant_scores_mut_file,stringsAsFactors=F))
 
-#add the deletion character for the earlier libraries when I didn't do indel
-for(bg in c("Omicron_BA1_c","Omicron_BA2_c","Wuhan-Hu-1_c","Beta_a","Eta_a","Alpha_a","Wuhan-Hu-1_a","Delta_b")){
-  for(pos in unique(dt$position)){
-    wt <- dt[target==bg & position==pos & wildtype==mutant,wildtype]
-    dt <- rbind(dt, data.frame(target=bg,position=pos,mutant="-",wildtype=wt,mutation=paste(wt,pos,"-",sep=""),n_bc_bind=0,n_libs_bind=0,n_bc_expr=0,n_libs_expr=0),fill=T)
-  }
-}
 setkey(dt,target,position,mutant)
 ```
 
@@ -162,7 +155,7 @@ JS <- function(vec1,vec2){
 #first, for bind measurements
 #data table for storing difference in correlation in profiles between bg pairs at each site
 #generate table with all combinations of bg_1 and bg_2 for each site
-diffs_bind <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_BA2_d","Omicron_BQ11_d","Omicron_XBB15_d","Omicron_BA1_c","Omicron_BA2_c","Wuhan-Hu-1_c","Beta_a","Eta_a","Alpha_a","Wuhan-Hu-1_a","Delta_b"),bg_1=c("Omicron_BA2_d","Omicron_BQ11_d","Omicron_XBB15_d","Omicron_BA1_c","Omicron_BA2_c","Wuhan-Hu-1_c","Beta_a","Eta_a","Alpha_a","Wuhan-Hu-1_a","Delta_b")))
+diffs_bind <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1")))
 
 #remove duplicates where bg_1 and _2 the same
 diffs_bind <- diffs_bind[bg_1 != bg_2,]
@@ -186,8 +179,7 @@ for(i in 1:nrow(diffs_bind)){
 #repeat for expr measurements
 #data table for storign difference in correlation in profiles between bg pairs at each site
 #generate table with all combinations of bg_1 and bg_2 for each site
-diffs_expr <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_BA2_d","Omicron_BQ11_d","Omicron_XBB15_d","Omicron_BA1_c","Omicron_BA2_c","Wuhan-Hu-1_c","Beta_a","Eta_a","Alpha_a","Wuhan-Hu-1_a","Delta_b"),bg_1=c("Omicron_BA2_d","Omicron_BQ11_d","Omicron_XBB15_d","Omicron_BA1_c","Omicron_BA2_c","Wuhan-Hu-1_c","Beta_a","Eta_a","Alpha_a","Wuhan-Hu-1_a","Delta_b")))
-
+diffs_expr <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1")))
 
 
 #remove duplicates where either bg_1 and _2 the same
@@ -214,15 +206,15 @@ Output file with the site-pair JS divergences.
 
 ``` r
 diffs_bind[,.(bg_1,bg_2,site,JSD,JSD_min3bc,JSD_min5bc)] %>%
-  mutate_if(is.numeric, round, digits=6) %>%
+  mutate_if(is.numeric, round, digits=3) %>%
   write.csv(file=config$JSD_file, row.names=F,quote=F)
 ```
 
-Output file with the site-pair JS divergences.
+Output file with the expr site-pair JS divergences.
 
 ``` r
 diffs_expr[,.(bg_1,bg_2,site,JSD,JSD_min3bc,JSD_min5bc)] %>%
-  mutate_if(is.numeric, round, digits=6) %>%
+  mutate_if(is.numeric, round, digits=3) %>%
   write.csv(file=config$JSD_expr_file, row.names=F,quote=F)
 ```
 
@@ -263,25 +255,25 @@ plot_scatter <- function(site, bg1, bg2, JSD=F, JSD_min3bc=T, JSD_min5bc=F,n_bc_
 
 ``` r
 par(mfrow=c(5,4))
-plot_scatter(site=342,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=355,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=379,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=380,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=399,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=405,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=406,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=412,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=433,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=449,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=453,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=455,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=456,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=486,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=487,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=492,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=493,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=494,"Omicron_BA2_d","Omicron_BQ11_d")
-plot_scatter(site=498,"Omicron_BA2_d","Omicron_BQ11_d")
+plot_scatter(site=342,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=355,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=379,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=380,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=399,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=405,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=406,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=412,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=433,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=449,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=453,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=455,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=456,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=486,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=487,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=492,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=493,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=494,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=498,"Omicron_BA2","Omicron_BQ11")
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_BQ11-v-BA2_shifts.pdf",sep=""),useDingbats=F))
 ```
@@ -290,25 +282,25 @@ invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron
 
 ``` r
 par(mfrow=c(5,4))
-plot_scatter(site=342,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=355,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=379,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=380,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=399,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=405,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=406,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=412,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=433,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=449,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=453,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=455,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=456,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=486,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=487,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=492,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=493,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=494,"Omicron_BA2_d","Omicron_XBB15_d")
-plot_scatter(site=498,"Omicron_BA2_d","Omicron_XBB15_d")
+plot_scatter(site=342,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=355,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=379,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=380,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=399,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=405,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=406,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=412,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=433,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=449,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=453,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=455,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=456,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=486,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=487,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=492,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=493,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=494,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=498,"Omicron_BA2","Omicron_XBB15")
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_XBB15-v-BA2_shifts.pdf",sep=""),useDingbats=F))
 ```
@@ -347,15 +339,15 @@ Lineplots, require minimum 3 bc for a measurement
 
 ``` r
 #define focal bg for others to compare to
-bg <- "Omicron_BA2_d"
+bg <- "Omicron_BA2"
 temp <- diffs_bind[bg_1==bg,]
 temp$target <- as.character(temp$bg_2)
 
 #define colors for each bg
-group.colors <- c("Wuhan-Hu-1_a" = cbPalette[1],"Wuhan-Hu-1_c" = cbPalette[1], "Omicron_BA1_c" = cbPalette[2], "Omicron_BA2_c" = cbPalette[8], "Alpha_a" = cbPalette[3], "Beta_a" = cbPalette[6], "Delta_b" = cbPalette[5], "Eta_a" = cbPalette[5], "Omicron_BQ11_d" = cbPalette[4], "Omicron_XBB15_d" = cbPalette[7])
+group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7])
 
 #define order for plotting of bgs
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15_d","Omicron_BQ11_d","Omicron_BA2_c","Omicron_BA1_c","Wuhan-Hu-1_c","Alpha_a","Beta_a","Delta_b","Eta_a","Wuhan-Hu-1_a"))
+temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA1","Delta","Beta","Alpha","Eta","Wuhan-Hu-1"))
 
 
 ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
@@ -372,17 +364,11 @@ ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
     ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
     ## ℹ Please use `linewidth` instead.
 
-    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
 <img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_BA2_min3bc-1.png" style="display: block; margin: auto;" />
 
 ``` r
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc.pdf",sep=""),useDingbats=F))
 ```
-
-    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
 
 Same but faceted
 
@@ -405,11 +391,10 @@ ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc_faceted.pdf",sep=""),useDingbats=F))
 ```
 
-Include just BA1 and WH1 from the prior VOC datasets, and prior BA2 for
-“control”
+Include just BA1 and WH1 from prior datasets
 
 ``` r
-ggplot(data=temp[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","Omicron_BQ11_d","Wuhan-Hu-1_c")], aes(x=site, y=JSD_min3bc, color=target))+
+ggplot(data=temp[bg_2 %in% c("Omicron_BA1","Omicron_XBB15","Omicron_BQ11","Wuhan-Hu-1")], aes(x=site, y=JSD_min3bc, color=target))+
   geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp$JSD,na.rm=T)), alpha=0.2)+
   geom_line(size=1)+
   scale_color_manual(values=group.colors)+
@@ -429,7 +414,7 @@ invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc_Om
 Same but faceted
 
 ``` r
-ggplot(data=temp[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","Omicron_BQ11_d","Wuhan-Hu-1_c")], aes(x=site, y=JSD_min3bc, color=target))+
+ggplot(data=temp[bg_2 %in% c("Omicron_BA1","Omicron_XBB15","Omicron_BQ11","Wuhan-Hu-1")], aes(x=site, y=JSD_min3bc, color=target))+
   geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp$JSD,na.rm=T)), alpha=0.2)+
   geom_line(size=1)+
   scale_color_manual(values=group.colors)+
@@ -452,15 +437,15 @@ becomes outddated)
 
 ``` r
 #define focal bg for others to compare to
-bg <- "Wuhan-Hu-1_c"
+bg <- "Wuhan-Hu-1"
 temp_WH1 <- diffs_bind[bg_1==bg,]
 temp_WH1$target <- as.character(temp_WH1$bg_2)
 
 #define colors for each bg
-group.colors <- c("Wuhan-Hu-1_a" = cbPalette[1],"Omicron_BA2_d" = cbPalette[8], "Omicron_BA1_c" = cbPalette[2], "Omicron_BA2_c" = cbPalette[8], "Alpha_a" = cbPalette[3], "Beta_a" = cbPalette[6], "Delta_b" = cbPalette[5], "Eta_a" = cbPalette[5], "Omicron_BQ11_d" = cbPalette[4], "Omicron_XBB15_d" = cbPalette[7])
+group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7])
 
 #define order for plotting of bgs
-temp_WH1$target <- factor(temp_WH1$target,levels=c("Omicron_XBB15_d","Omicron_BQ11_d","Omicron_BA2_d","Omicron_BA2_c","Omicron_BA1_c","Alpha_a","Beta_a","Delta_b","Eta_a","Wuhan-Hu-1_a"))
+temp_WH1$target <- factor(temp_WH1$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Beta","Alpha","Eta"))
 
 
 ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
@@ -474,7 +459,7 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
 ```
 
-    ## Warning: ggrepel: 9 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 <img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_WH1_min3bc-1.png" style="display: block; margin: auto;" />
@@ -483,7 +468,7 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc.pdf",sep=""),useDingbats=F))
 ```
 
-    ## Warning: ggrepel: 9 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 Same but faceted
@@ -507,11 +492,10 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_faceted.pdf",sep=""),useDingbats=F))
 ```
 
-Include just BA1 and WH1 from the prior VOC datasets, and prior BA2 for
-“control”
+Include just BA1 and WH1 from the prior VOC datasets
 
 ``` r
-ggplot(data=temp_WH1[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","Omicron_BQ11_d","Omciron_BA2_d")], aes(x=site, y=JSD_min3bc, color=target))+
+ggplot(data=temp_WH1[bg_2 %in% c("Omicron_BA1","Omicron_BA2","Omicron_XBB15","Omicron_BQ11")], aes(x=site, y=JSD_min3bc, color=target))+
   geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp_WH1$JSD,na.rm=T)), alpha=0.2)+
   geom_line(size=1)+
   scale_color_manual(values=group.colors)+
@@ -531,7 +515,7 @@ invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_Om
 Same but faceted
 
 ``` r
-ggplot(data=temp_WH1[bg_2 %in% c("Omicron_BA1_c","Omicron_BA2_c","Omicron_XBB15_d","Omicron_BQ11_d","Omicron_BA2_d")], aes(x=site, y=JSD_min3bc, color=target))+
+ggplot(data=temp_WH1[bg_2 %in% c("Omicron_BA1","Omicron_BA2","Omicron_XBB15","Omicron_BQ11")], aes(x=site, y=JSD_min3bc, color=target))+
   geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp_WH1$JSD,na.rm=T)), alpha=0.2)+
   geom_line(size=1)+
   scale_color_manual(values=group.colors)+
@@ -553,11 +537,11 @@ Scatterplots to look for any differences in epistatic shifts v BA2
 between the sub-vars?
 
 ``` r
-temp2 <- dcast(temp[bg_2 %in% c("Omicron_BQ11_d","Omicron_XBB15_d")], site ~ bg_2, value.var="JSD_min3bc")
+temp2 <- dcast(temp[bg_2 %in% c("Omicron_BQ11","Omicron_XBB15")], site ~ bg_2, value.var="JSD_min3bc")
 
-p1 <- ggplot(data=temp2, aes(x=Omicron_BQ11_d, y=Omicron_XBB15_d))+
+p1 <- ggplot(data=temp2, aes(x=Omicron_BQ11, y=Omicron_XBB15))+
   geom_point()+
-  geom_text_repel(aes(label=ifelse((Omicron_BQ11_d > 0.1 | Omicron_XBB15_d > 0.1),as.character(site),'')),size=3)+
+  geom_text_repel(aes(label=ifelse((Omicron_BQ11 > 0.1 | Omicron_XBB15 > 0.1),as.character(site),'')),size=3)+
   theme_classic()+
   xlab("epistatic shift versus Omicron BA.2, Omicron BQ.1.1")+
   ylab("epistatic shift versus Omicron BA.2, Omicron XBB.1.5")
@@ -565,26 +549,20 @@ p1 <- ggplot(data=temp2, aes(x=Omicron_BQ11_d, y=Omicron_XBB15_d))+
 grid.arrange(p1,nrow=1)
 ```
 
-    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
 <img src="epistatic_shifts_files/figure-gfm/scatterplots_epistatic-shift-v-BA2_BQ11_XBB15-1.png" style="display: block; margin: auto;" />
 
 ``` r
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc_BQ11-v-XBB15-scatters.pdf",sep=""),useDingbats=F))
 ```
 
-    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
-    ## increasing max.overlaps
-
 Same but JSD versus WH1?
 
 ``` r
-temp2_WH1 <- dcast(temp_WH1[bg_2 %in% c("Omicron_BQ11_d","Omicron_XBB15_d")], site ~ bg_2, value.var="JSD_min3bc")
+temp2_WH1 <- dcast(temp_WH1[bg_2 %in% c("Omicron_BQ11","Omicron_XBB15")], site ~ bg_2, value.var="JSD_min3bc")
 
-p1 <- ggplot(data=temp2_WH1, aes(x=Omicron_BQ11_d, y=Omicron_XBB15_d))+
+p1 <- ggplot(data=temp2_WH1, aes(x=Omicron_BQ11, y=Omicron_XBB15))+
   geom_point()+
-  geom_text_repel(aes(label=ifelse((Omicron_BQ11_d > 0.1 | Omicron_XBB15_d > 0.1),as.character(site),'')),size=3)+
+  geom_text_repel(aes(label=ifelse((Omicron_BQ11 > 0.1 | Omicron_XBB15 > 0.1),as.character(site),'')),size=3)+
   theme_classic()+
   xlab("epistatic shift versus Wuhan-Hu-1, Omicron BQ.1.1")+
   ylab("epistatic shift versus Wuhan-Hu-1, Omicron XBB.1.5")
@@ -608,11 +586,11 @@ Repeat for expression measurements, with WH1 ref
 
 ``` r
 #define focal bg for others to compare to
-bg <- "Wuhan-Hu-1_c"
+bg <- "Wuhan-Hu-1"
 temp <- diffs_expr[bg_1==bg,]
 temp$target <- as.character(temp$bg_2)
 
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15_d","Omicron_BQ11_d","Omicron_BA2_d","Omicron_BA2_c","Omicron_BA1_c","Alpha_a","Beta_a","Delta_b","Eta_a","Wuhan-Hu-1_a"))
+temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Beta","Alpha","Eta"))
 
 
 ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
@@ -636,11 +614,11 @@ And BA2 ref
 
 ``` r
 #define focal bg for others to compare to
-bg <- "Omicron_BA2_d"
+bg <- "Omicron_BA2"
 temp <- diffs_expr[bg_1==bg,]
 temp$target <- as.character(temp$bg_2)
 
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15_d","Omicron_BQ11_d","Omicron_BA2_c","Omicron_BA1_c","Wuhan-Hu-1_c","Alpha_a","Beta_a","Delta_b","Eta_a","Wuhan-Hu-1_a"))
+temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA1","Delta","Beta","Alpha","Eta","Wuhan-Hu-1"))
 
 
 ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
@@ -677,7 +655,7 @@ for(s in unique(dt$target)){
   for(i in 1:nrow(pdb_wh1$atom)){
     if(pdb_wh1$atom$chain[i]=="E"){
       res <- pdb_wh1$atom$resno[i]
-      JSD <- diffs_bind[bg_1=="Wuhan-Hu-1_c" & bg_2==s & site==res, JSD_min3bc]
+      JSD <- diffs_bind[bg_1=="Wuhan-Hu-1" & bg_2==s & site==res, JSD_min3bc]
       if(length(JSD)>0){
         b[i] <- JSD
       }
@@ -702,7 +680,7 @@ for(s in unique(dt$target)){
   for(i in 1:nrow(pdb_wh1$atom)){
     if(pdb_wh1$atom$chain[i]=="E"){
       res <- pdb_wh1$atom$resno[i]
-      JSD <- diffs_bind[bg_1=="Omicron_BA2_d" & bg_2==s & site==res, JSD_min3bc]
+      JSD <- diffs_bind[bg_1=="Omicron_BA2" & bg_2==s & site==res, JSD_min3bc]
       if(length(JSD)>0){
         b[i] <- JSD
       }
@@ -727,7 +705,7 @@ for(s in unique(dt$target)){
   for(i in 1:nrow(pdb_wh1$atom)){
     if(pdb_wh1$atom$chain[i]=="E"){
       res <- pdb_wh1$atom$resno[i]
-      JSD <- diffs_expr[bg_1=="Wuhan-Hu-1_c" & bg_2==s & site==res, JSD_min3bc]
+      JSD <- diffs_expr[bg_1=="Wuhan-Hu-1" & bg_2==s & site==res, JSD_min3bc]
       if(length(JSD)>0){
         b[i] <- JSD
       }
@@ -752,7 +730,7 @@ for(s in unique(dt$target)){
   for(i in 1:nrow(pdb_wh1$atom)){
     if(pdb_wh1$atom$chain[i]=="E"){
       res <- pdb_wh1$atom$resno[i]
-      JSD <- diffs_expr[bg_1=="Omicron_BA2_d" & bg_2==s & site==res, JSD_min3bc]
+      JSD <- diffs_expr[bg_1=="Omicron_BA2" & bg_2==s & site==res, JSD_min3bc]
       if(length(JSD)>0){
         b[i] <- JSD
       }

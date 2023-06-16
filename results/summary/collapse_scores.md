@@ -449,18 +449,53 @@ x <- dt_og[,delta_bind]; y <- dt_og[,bind_new]; plot(x,y,pch=16,col="#00000020",
 invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/correlations_BA2_PLOS-Path-v-new-dms.pdf",sep=""),useDingbats=F))
 ```
 
-## Heatmaps!
+We see this globally sensitized effect in the new BA.2 data that seems
+to make it difficult to compare to. For example, in later epistasis
+analyses, there is seemingly more epistasis BA.2 -\> XBB or BQ becuase
+of glboal sensitivity changes, but these are less dramatic iwth the PLOS
+Path Omi data. I think we should use the old BA.2 reference instead.
 
-Order factor variables for plotting
+Merge with the prior VOC DMS experiments
 
 ``` r
+dt_voc <- data.table(read.csv(file=config$mut_bind_expr,stringsAsFactors=F))
+
+dt_voc <- dt_voc[target %in% c("Alpha","Beta","Eta","Delta","Wuhan-Hu-1_v2","Omicron_BA1","Omicron_BA2")]
+dt_voc[target=="Wuhan-Hu-1_v2",target:="Wuhan-Hu-1"]
+
+#add the deletion character for the earlier libraries when I didn't do indel
+for(bg in c("Omicron_BA1","Omicron_BA2","Wuhan-Hu-1","Beta","Eta","Alpha","Delta")){
+  for(pos in unique(dt_voc$position)){
+    wt <- dt_voc[target==bg & position==pos & wildtype==mutant,wildtype]
+    dt_voc <- rbind(dt_voc, data.frame(target=bg,position=pos,mutant="-",wildtype=wt,mutation=paste(wt,pos,"-",sep=""),n_bc_bind=0,n_libs_bind=0,n_bc_expr=0,n_libs_expr=0),fill=T)
+  }
+}
+
+setkey(dt_voc,target,position,mutant)
+
 #rename targets
 dt_final[target=="BA2",target:="Omicron_BA2"]
 dt_final[target=="BQ11",target:="Omicron_BQ11"]
 dt_final[target=="XBB15",target:="Omicron_XBB15"]
 
+dt_final <- dt_final[target %in% c("Omicron_BQ11","Omicron_XBB15"),]
+
+dt_final$bind_rep3 <- as.numeric(NA)
+
+dt_final <- rbind(dt_final[,.(target,wildtype,position,mutant,mutation,bind,delta_bind,n_bc_bind,n_libs_bind,bind_rep1,bind_rep2,bind_rep3,expr,delta_expr,n_bc_expr,n_libs_expr,expr_rep1,expr_rep2)],dt_voc[,.(target,wildtype,position,mutant,mutation,bind,delta_bind,n_bc_bind,n_libs_bind,bind_rep1,bind_rep2,bind_rep3,expr,delta_expr,n_bc_expr,n_libs_expr,expr_rep1,expr_rep2)])
+
+setkey(dt_final,target,position,mutant)
+
+rm(dt_voc)
+```
+
+## Heatmaps!
+
+Order factor variables for plotting
+
+``` r
 #order targets in plotting order
-dt_final$target <- factor(dt_final$target,levels=c("Omicron_BA2","Omicron_BQ11","Omicron_XBB15"))
+dt_final$target <- factor(dt_final$target,levels=c("Wuhan-Hu-1","Eta","Alpha","Beta","Delta","Omicron_BA1","Omicron_BA2","Omicron_BQ11","Omicron_XBB15"))
 #order mutant as a factor for grouping by rough biochemical grouping
 dt_final$mutant <- factor(dt_final$mutant, levels=c("-","C","P","G","V","M","L","I","A","F","W","Y","T","S","N","Q","E","D","H","K","R"))
 #add character vector indicating wildtype to use as plotting symbols for wt
@@ -469,7 +504,7 @@ dt_final[as.character(mutant)==as.character(wildtype),wildtype_indicator := "x"]
 
 
 #make temp long-form data frame
-temp <- data.table::melt(dt_final[, .(target,position,mutant,bind,delta_bind,expr,delta_expr,wildtype_indicator)],id.vars=c("target","position","mutant","wildtype_indicator"),measure.vars=c("bind","delta_bind","expr","delta_expr"),variable.name="measurement",value.name="value")
+temp <- data.table::melt(dt_final[target %in% c("Wuhan-Hu-1","Omicon_BA1","Omicron_BA2","Omicron_BQ11","Omicron_XBB15"), .(target,position,mutant,bind,delta_bind,expr,delta_expr,wildtype_indicator)],id.vars=c("target","position","mutant","wildtype_indicator"),measure.vars=c("bind","delta_bind","expr","delta_expr"),variable.name="measurement",value.name="value")
 
 #for method to duplicate aa labels on right side of plot https://github.com/tidyverse/ggplot2/issues/3171
 guide_axis_label_trans <- function(label_trans = identity, ...) {
@@ -576,32 +611,6 @@ p1
 
 ``` r
 invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/heatmap_SSM_delta-expression-by-target.pdf",sep="")))
-```
-
-Merge with the prior VOC DMS experiments so the file for subsequent
-analyses and interactive visualizaitons incorporates all of our recent
-VOC DMS data. Add strings that indicate DMS batches
-
-``` r
-dt_voc <- data.table(read.csv(file=config$mut_bind_expr,stringsAsFactors=F))
-dt_voc[target=="Wuhan-Hu-1_v1",target:="Wuhan-Hu-1_a"]
-dt_voc[target=="Alpha",target:="Alpha_a"]
-dt_voc[target=="Beta",target:="Beta_a"]
-dt_voc[target=="Eta",target:="Eta_a"]
-dt_voc[target=="Delta",target:="Delta_b"]
-dt_voc[target=="Wuhan-Hu-1_v2",target:="Wuhan-Hu-1_c"]
-dt_voc[target=="Omicron_BA1",target:="Omicron_BA1_c"]
-dt_voc[target=="Omicron_BA2",target:="Omicron_BA2_c"]
-
-dt_final[target=="Omicron_BA2",target:="Omicron_BA2_d"]
-dt_final[target=="Omicron_BQ11",target:="Omicron_BQ11_d"]
-dt_final[target=="Omicron_XBB15",target:="Omicron_XBB15_d"]
-
-dt_final$bind_rep3 <- as.numeric(NA)
-
-dt_final <- rbind(dt_final[,.(target,wildtype,position,mutant,mutation,bind,delta_bind,n_bc_bind,n_libs_bind,bind_rep1,bind_rep2,bind_rep3,expr,delta_expr,n_bc_expr,n_libs_expr,expr_rep1,expr_rep2)],dt_voc[,.(target,wildtype,position,mutant,mutation,bind,delta_bind,n_bc_bind,n_libs_bind,bind_rep1,bind_rep2,bind_rep3,expr,delta_expr,n_bc_expr,n_libs_expr,expr_rep1,expr_rep2)])
-
-rm(dt_voc)
 ```
 
 Save output files.

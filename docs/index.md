@@ -5,9 +5,11 @@
 layout: default
 ---
 
+**NOTE: data for Omicron XBB.1.5 and BQ.1.1 are preliminary and _will_ change at least one more time with more sequencing depth**
+
 ## Overview 
 
-We performed deep mutational scans to measure the impact on ACE2 binding of all single amino-acid mutations in the Omicron BA.1 and BA.2 variant RBDs, and compare mutational effects to those in the ancestral Wuhan-Hu-1 RBD background. Find details in the our preprint [here](https://www.biorxiv.org/content/10.1101/2022.09.20.508745v1). We combine this with other variant RBD backgrounds described in this [prior publication](https://www.science.org/doi/10.1126/science.abo7896).
+We performed deep mutational scans to measure the impact on ACE2 binding of all single amino-acid mutations in the Omicron BQ.1.1 and XBB.1.5 variant RBDs, and compare mutational effects to those in previously queried SARS-CoV-2 variants Wuhan-Hu-1, Eta, Alpha, Beta, Delta, Omicron BA.1, and BA.2 from previously published studies [here](https://www.science.org/doi/10.1126/science.abo7896) and [here](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010951).
 
 Here, we link to two interactive visualizations that enable exploration of the data from these deep mutational scans across SARS_CoV-2 variants.
 
@@ -22,4 +24,4 @@ We have made two tools to help visualize the data from our deep mutational scans
 
 ### Data
 
-If you are interested in the raw data from our study, you can find the ACE2-binding affinity (-log10 $$K_D$$) and RBD expression (log10(MFI)) measurements from each experiment [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/tree/main/results/final_variant_scores). You can find the data used to plot the epistatic shifts between variant backgrounds [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/blob/main/results/epistatic_shifts/JSD_versus_Wuhan1_by_target.csv). Data for pre-Omicron variants (Alpha, Beta, Delta, Eta, and associated Wuhan-Hu-1 measurements) are described in [this paper](https://www.science.org/doi/10.1126/science.abo7896) and found on [this repository](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_variants).
+If you are interested in the raw data from our study, you can find the ACE2-binding affinity (-log10 $$K\_D$$) and RBD expression (log10(MFI)) measurements from each experiment [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/final_variant_scores/final_variant_scores.csv). You can find the data used to plot the epistatic shifts between variant backgrounds [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/epistatic_shifts/JSD_by_target.csv).

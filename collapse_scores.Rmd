@@ -407,7 +407,7 @@ dt_final[as.character(mutant)==as.character(wildtype),wildtype_indicator := "x"]
 
 
 #make temp long-form data frame
-temp <- data.table::melt(dt_final[target %in% c("Wuhan-Hu-1","Omicon_BA1","Omicron_BA2","Omicron_BQ11","Omicron_XBB15"), .(target,position,mutant,bind,delta_bind,expr,delta_expr,wildtype_indicator)],id.vars=c("target","position","mutant","wildtype_indicator"),measure.vars=c("bind","delta_bind","expr","delta_expr"),variable.name="measurement",value.name="value")
+temp <- data.table::melt(dt_final[target %in% c("Wuhan-Hu-1","Omicron_BA1","Omicron_BA2","Omicron_BQ11","Omicron_XBB15"), .(target,position,mutant,bind,delta_bind,expr,delta_expr,wildtype_indicator)],id.vars=c("target","position","mutant","wildtype_indicator"),measure.vars=c("bind","delta_bind","expr","delta_expr"),variable.name="measurement",value.name="value")
 
 #for method to duplicate aa labels on right side of plot https://github.com/tidyverse/ggplot2/issues/3171
 guide_axis_label_trans <- function(label_trans = identity, ...) {
@@ -501,7 +501,7 @@ Save output files.
 
 ```{r outputs}
 dt_final[,.(target,wildtype,position,mutant,mutation,bind,delta_bind,n_bc_bind,n_libs_bind,bind_rep1,bind_rep2,bind_rep3,expr,delta_expr,n_bc_expr,n_libs_expr,expr_rep1,expr_rep2)] %>%
-  mutate_if(is.numeric, round, digits=5) %>%
+  mutate_if(is.numeric, round, digits=2) %>%
   write.csv(file=config$final_variant_scores_mut_file, row.names=F,quote=F)
 ```
 

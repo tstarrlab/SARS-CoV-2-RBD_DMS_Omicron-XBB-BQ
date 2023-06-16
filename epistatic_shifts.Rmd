@@ -110,17 +110,13 @@ diffs_bind <- diffs_bind[bg_1 != bg_2,]
 #loop through and compute JSD for each site for each pair of bgs, for bind metric
 diffs_bind$JSD <- as.numeric(NA) #jensen-shannon divergence, from raw bind values (lower limit 5)
 diffs_bind$JSD_min3bc <- as.numeric(NA) #jensen-shannon divergence, require a minimum of 3 bcs averaged
-diffs_bind$JSD_min5bc <- as.numeric(NA) #jensen-shannon divergence, require a minimum of 5 bcs averaged
 for(i in 1:nrow(diffs_bind)){
   x_uncens <- dt[target==diffs_bind[i,bg_1] & position==diffs_bind[i,site],bind]
   y_uncens <- dt[target==diffs_bind[i,bg_2] & position==diffs_bind[i,site],bind]
   x_min3bc <- dt[target==diffs_bind[i,bg_1] & position==diffs_bind[i,site],bind_min3bc]
   y_min3bc <- dt[target==diffs_bind[i,bg_2] & position==diffs_bind[i,site],bind_min3bc]
-  x_min5bc <- dt[target==diffs_bind[i,bg_1] & position==diffs_bind[i,site],bind_min5bc]
-  y_min5bc <- dt[target==diffs_bind[i,bg_2] & position==diffs_bind[i,site],bind_min5bc]
   diffs_bind[i,JSD := JS(x_uncens,y_uncens)]
   diffs_bind[i,JSD_min3bc := JS(x_min3bc,y_min3bc)]
-  diffs_bind[i,JSD_min5bc := JS(x_min3bc,y_min5bc)]
 }
 
 #repeat for expr measurements
@@ -135,31 +131,27 @@ diffs_expr <- diffs_expr[bg_1 != bg_2,]
 #loop through and compute JSD for each site for each pair of bgs, for expr metric
 diffs_expr$JSD <- as.numeric(NA) #jensen-shannon divergence, from raw expr values
 diffs_expr$JSD_min3bc <- as.numeric(NA) #jensen-shannon divergence, require a minimum of 3 bcs averaged
-diffs_expr$JSD_min5bc <- as.numeric(NA) #jensen-shannon divergence, require a minimum of 5 bcs averaged
 for(i in 1:nrow(diffs_expr)){
   x_uncens <- dt[target==diffs_expr[i,bg_1] & position==diffs_expr[i,site],expr]
   y_uncens <- dt[target==diffs_expr[i,bg_2] & position==diffs_expr[i,site],expr]
   x_min3bc <- dt[target==diffs_expr[i,bg_1] & position==diffs_expr[i,site],expr_min3bc]
   y_min3bc <- dt[target==diffs_expr[i,bg_2] & position==diffs_expr[i,site],expr_min3bc]
-  x_min5bc <- dt[target==diffs_expr[i,bg_1] & position==diffs_expr[i,site],expr_min5bc]
-  y_min5bc <- dt[target==diffs_expr[i,bg_2] & position==diffs_expr[i,site],expr_min5bc]
   diffs_expr[i,JSD := JS(x_uncens,y_uncens)]
   diffs_expr[i,JSD_min3bc := JS(x_min3bc,y_min3bc)]
-  diffs_expr[i,JSD_min5bc := JS(x_min3bc,y_min5bc)]
 }
 
 ```
 
 Output file with the site-pair JS divergences.
 ```{r save_JSD_bind_file, echo=T}
-diffs_bind[,.(bg_1,bg_2,site,JSD,JSD_min3bc,JSD_min5bc)] %>%
+diffs_bind[,.(bg_1,bg_2,site,JSD,JSD_min3bc)] %>%
   mutate_if(is.numeric, round, digits=3) %>%
   write.csv(file=config$JSD_file, row.names=F,quote=F)
 ```
 
 Output file with the expr site-pair JS divergences.
 ```{r save_JSD_expr_file, echo=T}
-diffs_expr[,.(bg_1,bg_2,site,JSD,JSD_min3bc,JSD_min5bc)] %>%
+diffs_expr[,.(bg_1,bg_2,site,JSD,JSD_min3bc)] %>%
   mutate_if(is.numeric, round, digits=3) %>%
   write.csv(file=config$JSD_expr_file, row.names=F,quote=F)
 ```

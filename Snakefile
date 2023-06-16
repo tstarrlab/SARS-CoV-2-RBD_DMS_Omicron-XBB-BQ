@@ -181,6 +181,7 @@ rule collapse_scores:
     input:
         config['Titeseq_Kds_file'],
         config['expression_sortseq_file'],
+        config['mut_bind_expr'],
     output:
         config['final_variant_scores_mut_file'],
         md='results/summary/collapse_scores.md',

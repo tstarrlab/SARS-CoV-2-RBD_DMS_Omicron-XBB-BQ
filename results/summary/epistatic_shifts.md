@@ -15,13 +15,16 @@ Tyler Starr
 - <a href="#map-divergence-to-pdb-structure"
   id="toc-map-divergence-to-pdb-structure">Map divergence to pdb
   structure</a>
+- <a href="#multidimensional-scaling-of-epistatic-drift"
+  id="toc-multidimensional-scaling-of-epistatic-drift">Multidimensional
+  scaling of epistatic drift</a>
 
 This notebook analyzes sites whose mutation effects deviate most
 strongly among the variant RBD backgrounds.
 
 ``` r
 #list of packages to install/load
-packages = c("yaml","data.table","tidyverse","gridExtra","bio3d","ggridges","ggrepel","GGally")
+packages = c("yaml","data.table","tidyverse","gridExtra","grid","bio3d","ggridges","ggrepel","GGally")
 #install any packages not already installed
 installed_packages <- packages %in% rownames(installed.packages())
 if(any(installed_packages == F)){
@@ -57,7 +60,7 @@ sessionInfo()
 
     ## R version 4.1.3 (2022-03-10)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Rocky Linux 8.5 (Green Obsidian)
+    ## Running under: Rocky Linux 8.8 (Green Obsidian)
     ## 
     ## Matrix products: default
     ## BLAS/LAPACK: /uufs/chpc.utah.edu/sys/spack/linux-rocky8-nehalem/gcc-8.5.0/intel-oneapi-mkl-2021.4.0-h43nkmwzvaltaa6ii5l7n6e7ruvjbmnv/mkl/2021.4.0/lib/intel64/libmkl_rt.so.1
@@ -71,7 +74,8 @@ sessionInfo()
     ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
     ## 
     ## attached base packages:
-    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+    ## [8] base     
     ## 
     ## other attached packages:
     ##  [1] GGally_2.1.2      ggrepel_0.9.1     ggridges_0.5.4    bio3d_2.4-4      
@@ -87,13 +91,13 @@ sessionInfo()
     ## [17] rmarkdown_2.13     munsell_0.5.0      broom_0.7.12       compiler_4.1.3    
     ## [21] modelr_0.1.8       xfun_0.30          pkgconfig_2.0.3    htmltools_0.5.2   
     ## [25] tidyselect_1.1.2   reshape_0.8.8      fansi_1.0.2        crayon_1.5.0      
-    ## [29] tzdb_0.2.0         dbplyr_2.1.1       withr_2.5.0        grid_4.1.3        
-    ## [33] jsonlite_1.8.4     gtable_0.3.0       lifecycle_1.0.3    DBI_1.1.2         
-    ## [37] magrittr_2.0.2     scales_1.2.1       cli_3.6.0          stringi_1.7.6     
-    ## [41] fs_1.5.2           xml2_1.3.3         ellipsis_0.3.2     generics_0.1.2    
-    ## [45] vctrs_0.5.2        RColorBrewer_1.1-2 tools_4.1.3        glue_1.6.2        
-    ## [49] hms_1.1.1          parallel_4.1.3     fastmap_1.1.0      colorspace_2.0-3  
-    ## [53] rvest_1.0.2        knitr_1.37         haven_2.4.3
+    ## [29] tzdb_0.2.0         dbplyr_2.1.1       withr_2.5.0        jsonlite_1.8.7    
+    ## [33] gtable_0.3.0       lifecycle_1.0.3    DBI_1.1.2          magrittr_2.0.2    
+    ## [37] scales_1.2.1       cli_3.6.0          stringi_1.7.6      fs_1.5.2          
+    ## [41] xml2_1.3.3         ellipsis_0.3.2     generics_0.1.2     vctrs_0.5.2       
+    ## [45] RColorBrewer_1.1-2 tools_4.1.3        glue_1.6.2         hms_1.1.1         
+    ## [49] parallel_4.1.3     fastmap_1.1.0      colorspace_2.0-3   rvest_1.0.2       
+    ## [53] knitr_1.37         haven_2.4.3
 
 Define colorblind-friendly palette
 
@@ -108,11 +112,41 @@ cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 
 ## Setup
 
-Read in tables of mutant measurements from current study and prior VOCs
-DMS datasets.
+Read in tables of mutant measurements from current study and prior VOC
+and SARSr DMS datasets.
 
 ``` r
 dt <- data.table(read.csv(file=config$final_variant_scores_mut_file,stringsAsFactors=F))
+
+#read in SARS1 data. Also include the matched WH1 data to see what impact dimer versus monomer ACE2 has on isogenic data.
+dt_SARSr <- data.table(read.csv(file=config$SARSr_DMS,stringsAsFactors=F))[target %in% c("SARS-CoV-1_Urbani","SARS-CoV-2_WH1"),.(target, wildtype, site_SARS2, mutant, mutation_SARS2, huACE2, huACE2_delta, n_bc_huACE2, expression, expression_delta, n_bc_expression)]
+
+setnames(dt_SARSr, "site_SARS2", "position"); setnames(dt_SARSr, "mutation_SARS2", "mutation"); setnames(dt_SARSr, "huACE2", "bind"); setnames(dt_SARSr, "huACE2_delta", "delta_bind"); setnames(dt_SARSr, "n_bc_huACE2", "n_bc_bind"); setnames(dt_SARSr, "expression", "expr"); setnames(dt_SARSr, "expression_delta", "delta_expr"); setnames(dt_SARSr, "n_bc_expression", "n_bc_expr")
+
+dt_SARSr$position <- as.numeric(dt_SARSr$position)
+
+#add any sites missing in dt_SARSr (notably a single-aa deletion in SARS1 relative to SARS2)
+for(bg in unique(dt_SARSr$target)){
+  for(site in 331:531){
+    if(!(site %in% dt_SARSr[target==bg,position])){
+      for(AA in c("A","C","D","E","F","G","H","I","K","L","M","N","P","Q","R","S","T","V","W","Y")){
+        dt_SARSr <- rbind(dt_SARSr, data.frame(target=bg, wildtype="-",position=site,mutant=AA,mutation=paste("-",site,AA,sep=""),n_bc_bind=0,n_libs_bind=0,n_bc_expr=0,n_libs_expr=0),fill=T)
+      }
+    }
+  }
+}
+
+#add the deletion character for the earlier libraries when I didn't do indel
+for(bg in unique(dt_SARSr$target)){
+  for(pos in unique(dt_SARSr$position)){
+    wt <- dt_SARSr[target==bg & position==pos & mutant=="A",wildtype]
+    dt_SARSr <- rbind(dt_SARSr, data.frame(target=bg,wildtype=wt,position=pos,mutant="-",mutation=paste(wt,pos,"-",sep=""),n_bc_bind=0,n_libs_bind=0,n_bc_expr=0,n_libs_expr=0),fill=T)
+  }
+}
+
+
+#merge
+dt <- merge(dt, dt_SARSr, all=TRUE)
 
 setkey(dt,target,position,mutant)
 ```
@@ -155,7 +189,7 @@ JS <- function(vec1,vec2){
 #first, for bind measurements
 #data table for storing difference in correlation in profiles between bg pairs at each site
 #generate table with all combinations of bg_1 and bg_2 for each site
-diffs_bind <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1")))
+diffs_bind <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1","SARS-CoV-2_WH1","SARS-CoV-1_Urbani"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1","SARS-CoV-2_WH1","SARS-CoV-1_Urbani")))
 
 #remove duplicates where bg_1 and _2 the same
 diffs_bind <- diffs_bind[bg_1 != bg_2,]
@@ -175,7 +209,7 @@ for(i in 1:nrow(diffs_bind)){
 #repeat for expr measurements
 #data table for storign difference in correlation in profiles between bg pairs at each site
 #generate table with all combinations of bg_1 and bg_2 for each site
-diffs_expr <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1")))
+diffs_expr <- data.table(expand.grid(site=unique(dt$position),bg_2=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1","SARS-CoV-2_WH1","SARS-CoV-1_Urbani"),bg_1=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Eta","Beta","Alpha","Wuhan-Hu-1","SARS-CoV-2_WH1","SARS-CoV-1_Urbani")))
 
 
 #remove duplicates where either bg_1 and _2 the same
@@ -336,10 +370,10 @@ temp <- diffs_bind[bg_1==bg,]
 temp$target <- as.character(temp$bg_2)
 
 #define colors for each bg
-group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7])
+group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7], "SARS-CoV-1_Urbani" = "black", "SARS-CoV-2_WH1" = "black")
 
 #define order for plotting of bgs
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA1","Delta","Beta","Alpha","Eta","Wuhan-Hu-1"))
+temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA1","Delta","Beta","Alpha","Eta","Wuhan-Hu-1","SARS-CoV-1_Urbani","SARS-CoV-2_WH1"))
 
 
 ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
@@ -356,11 +390,17 @@ ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
     ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
     ## ℹ Please use `linewidth` instead.
 
+    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
+
 <img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_BA2_min3bc-1.png" style="display: block; margin: auto;" />
 
 ``` r
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc.pdf",sep=""),useDingbats=F))
 ```
+
+    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
+    ## increasing max.overlaps
 
 Same but faceted
 
@@ -434,10 +474,10 @@ temp_WH1 <- diffs_bind[bg_1==bg,]
 temp_WH1$target <- as.character(temp_WH1$bg_2)
 
 #define colors for each bg
-group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7])
+group.colors <- c("Wuhan-Hu-1" = cbPalette[1], "Omicron_BA1" = cbPalette[2], "Omicron_BA2" = cbPalette[8], "Alpha" = cbPalette[3], "Beta" = cbPalette[6], "Delta" = cbPalette[5], "Eta" = cbPalette[5], "Omicron_BQ11" = cbPalette[4], "Omicron_XBB15" = cbPalette[7], "SARS-CoV-2_WH1" = cbPalette[1], "SARS-CoV-1_Urbani" = "black")
 
 #define order for plotting of bgs
-temp_WH1$target <- factor(temp_WH1$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Beta","Alpha","Eta"))
+temp_WH1$target <- factor(temp_WH1$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Beta","Alpha","Eta", "SARS-CoV-2_WH1","SARS-CoV-1_Urbani"))
 
 
 ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
@@ -451,7 +491,7 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
   geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
 ```
 
-    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 <img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_WH1_min3bc-1.png" style="display: block; margin: auto;" />
@@ -460,7 +500,7 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc, color=target))+
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc.pdf",sep=""),useDingbats=F))
 ```
 
-    ## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 Same but faceted
@@ -573,62 +613,6 @@ invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_BQ
 
     ## Warning: ggrepel: 4 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
-
-Repeat for expression measurements, with WH1 ref
-
-``` r
-#define focal bg for others to compare to
-bg <- "Wuhan-Hu-1"
-temp <- diffs_expr[bg_1==bg,]
-temp$target <- as.character(temp$bg_2)
-
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA2","Omicron_BA1","Delta","Beta","Alpha","Eta"))
-
-
-ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
-  geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp$JSD,na.rm=T)), alpha=0.2)+
-  geom_line(size=1)+
-  scale_color_manual(values=group.colors)+
-  theme_classic()+
-  scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
-  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1, expression DMS")+
-  geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
-```
-
-<img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_WH1_min3bc_expr-1.png" style="display: block; margin: auto;" />
-
-``` r
-invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_expr.pdf",sep=""),useDingbats=F))
-```
-
-And BA2 ref
-
-``` r
-#define focal bg for others to compare to
-bg <- "Omicron_BA2"
-temp <- diffs_expr[bg_1==bg,]
-temp$target <- as.character(temp$bg_2)
-
-temp$target <- factor(temp$target,levels=c("Omicron_XBB15","Omicron_BQ11","Omicron_BA1","Delta","Beta","Alpha","Eta","Wuhan-Hu-1"))
-
-
-ggplot(data=temp, aes(x=site, y=JSD_min3bc, color=target))+
-  geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp$JSD,na.rm=T)), alpha=0.2)+
-  geom_line(size=1)+
-  scale_color_manual(values=group.colors)+
-  theme_classic()+
-  scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
-  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
-  ylab("JS divergence versus Wuhan-Hu-1, expression DMS")+
-  geom_text_repel(aes(label=ifelse(((JSD_min3bc > 0.15)),as.character(site),'')),size=3,color="gray40")
-```
-
-<img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_BA2_min3bc_expr-1.png" style="display: block; margin: auto;" />
-
-``` r
-invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_BA2_min3bc_expr.pdf",sep=""),useDingbats=F))
-```
 
 ## Map divergence to pdb structure
 
@@ -816,4 +800,163 @@ entrenchment and anti-entrenchment
 # }
 # 
 # invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/entrenchment_diagrams_BA2.pdf",sep=""),useDingbats=F))
+```
+
+## Multidimensional scaling of epistatic drift
+
+Want to use MDS to plot trajectory of epistatic drift among all pairs of
+variants. The goal of this is to illustrate in 2D the distance in
+vectors of mutational effects between each pair of variants that we’ve
+profiled. We will do this by deriving a “complete” epistatic shift
+metric between each pair of variants that integrates across all sites,
+and use this as the dissimilarity metric for MDS projection. We could
+also do this on a site-by-site basis if we wanted to illustrate how
+different sites show different patterns in their epistatic drift
+
+``` r
+#For each pair, have sitewise epistatic shift metrics. Compute (mean, root-mean-squared, L2 norm, L3 of JSD for each RBD pair across all sites, and use that as the dissimilarity?
+
+#if wanting to remove the WH1 dimer data (used as control to make sure selecting an MDS condition where WH1 monomer and dimer look similar since SARS1 data is dimer)
+diffs_bind <- diffs_bind[bg_1 != "SARS-CoV-2_WH1" & bg_2 != "SARS-CoV-2_WH1"]
+
+#make matrix to host these dissimilarities
+dissim <- matrix(0,nrow=length(unique(diffs_bind$bg_1)), ncol=length(unique(diffs_bind$bg_1)))
+rownames(dissim) <- unique(diffs_bind$bg_1)
+colnames(dissim) <- unique(diffs_bind$bg_1)
+
+dissim_mean <- dissim
+dissim_RMS <- dissim
+dissim_L2 <- dissim
+dissim_L3 <- dissim
+dissim_L4 <- dissim
+
+for(row in rownames(dissim)){
+  for(col in colnames(dissim)){
+    if(row != col){
+      data <- diffs_bind[bg_1==row & bg_2==col]
+      dissim_mean[row,col] <- mean(data$JSD_min3bc,na.rm=T)
+      dissim_RMS[row,col] <- sqrt(mean(data$JSD_min3bc^2,na.rm=T))
+      dissim_L2[row,col] <- sum(data$JSD_min3bc^2)^(1/2)
+      dissim_L3[row,col] <- sum(data$JSD_min3bc^3)^(1/3)
+      dissim_L4[row,col] <- sum(data$JSD_min3bc^4)^(1/4)
+    }
+  }
+}
+
+mds_mean <- as.data.frame(cmdscale(dissim_mean))
+mds_RMS <- as.data.frame(cmdscale(dissim_RMS))
+mds_L2 <- as.data.frame(cmdscale(dissim_L2))
+mds_L3 <- as.data.frame(cmdscale(dissim_L3))
+mds_L4 <- as.data.frame(cmdscale(dissim_L4))
+
+colnames(mds_mean) <- c("Dim.1","Dim.2")
+colnames(mds_RMS) <- c("Dim.1","Dim.2")
+colnames(mds_L2) <- c("Dim.1","Dim.2")
+colnames(mds_L3) <- c("Dim.1","Dim.2")
+colnames(mds_L4) <- c("Dim.1","Dim.2")
+
+mds_mean$label <- rownames(mds_mean)
+mds_RMS$label <- rownames(mds_RMS)
+mds_L2$label <- rownames(mds_L2)
+mds_L3$label <- rownames(mds_L3)
+mds_L4$label <- rownames(mds_L4)
+
+p_mean <- ggplot(data=mds_mean, aes(x = Dim.1, y = Dim.2))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("mean")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))
+
+p_RMS <- ggplot(data=mds_RMS, aes(x = Dim.2, y = Dim.1))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("RMS")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))
+  
+
+p_L2 <- ggplot(data=mds_L2, aes(x = Dim.2, y = Dim.1))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("L2")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))
+
+p_L3 <- ggplot(data=mds_L3, aes(x = Dim.2, y = Dim.1))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("L3")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))
+
+p_L4 <- ggplot(data=mds_L4, aes(x = Dim.2, y = Dim.1))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  ggtitle("L4")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))
+
+grid.arrange(p_mean,p_RMS,nullGrob(),p_L2,p_L3,p_L4,nrow=2)
+```
+
+<img src="epistatic_shifts_files/figure-gfm/derive_dissimilarity-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/MDS-scatters.pdf",sep=""),useDingbats=F))
+```
+
+Here’s what the per-site epistatic shifts look like e.g. squared (what
+gets summed into L2) and below, cubed (L3)
+
+``` r
+ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc^2, color=target))+
+  geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp_WH1$JSD^2,na.rm=T)), alpha=0.2)+
+  geom_line(size=1)+
+  scale_color_manual(values=group.colors)+
+  theme_classic()+
+  scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
+  ylab("JS divergence versus Wuhan-Hu-1")+
+  geom_text_repel(aes(label=ifelse(((JSD_min3bc^2 > 0.05)),as.character(site),'')),size=3,color="gray40")+
+  facet_wrap(~bg_2,ncol=1)
+```
+
+<img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_WH1_min3bc_facet_squared-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_faceted_square.pdf",sep=""),useDingbats=F))
+```
+
+``` r
+ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc^3, color=target))+
+  geom_rect(data=label_df, aes(x=NULL, y=NULL, color=NULL,xmin=xmin, xmax=xmax, ymin=0,ymax=1.1*max(temp_WH1$JSD^3,na.rm=T)), alpha=0.2)+
+  geom_line(size=1)+
+  scale_color_manual(values=group.colors)+
+  theme_classic()+
+  scale_x_continuous(expand=c(0.01,0.01),breaks=c(331,seq(335,530,by=5)))+
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.6,face="bold",size=10))+
+  ylab("JS divergence versus Wuhan-Hu-1")+
+  geom_text_repel(aes(label=ifelse(((JSD_min3bc^3 > 0.01)),as.character(site),'')),size=3,color="gray40")+
+  facet_wrap(~bg_2,ncol=1)
+```
+
+<img src="epistatic_shifts_files/figure-gfm/line_plots_JSD_v_WH1_min3bc_facet_cubed-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_faceted_cube.pdf",sep=""),useDingbats=F))
 ```

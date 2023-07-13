@@ -10,6 +10,9 @@
 src/
 env/
 
+gisaid_cred.yaml
+data/hCoV-19_spikeprot*.tar.xz
+
 results/*
 !results/summary
 

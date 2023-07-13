@@ -26,6 +26,7 @@ localrules: make_dag,
             get_BA2_bc_lookup,
             get_mut_antibody_escape,
             get_mut_bind_expr
+            get_SARSr_DMS
 
 # Functions -------------------------------------------------------------------
 def nb_markdown(nb):
@@ -53,6 +54,7 @@ rule make_summary:
         env='environment_pinned.yml',
         get_mut_bind_expr=config['mut_bind_expr'],
         get_mut_antibody_escape=config['mut_antibody_escape'],
+        get_SARSr_DMS=config['SARSr_DMS'],
         process_ccs_XBB15=nb_markdown('process_ccs_XBB15.ipynb'),
         process_ccs_BQ11=nb_markdown('process_ccs_BQ11.ipynb'),
         barcode_variant_table_BA2=config['codon_variant_table_file_BA2'],
@@ -68,7 +70,9 @@ rule make_summary:
         mut_phenos_file=config['final_variant_scores_mut_file'],
         epistatic_shifts='results/summary/epistatic_shifts.md',
         epistasis_viz=os.path.join(config['visualization_dir'], "epistasis.html"),
-        heatmap_viz=os.path.join(config['visualization_dir'], "heatmap.html")
+        heatmap_viz=os.path.join(config['visualization_dir'], "heatmap.html"),
+        gisaid_rbd_mutations=nb_markdown('gisaid_rbd_mutations.ipynb'),
+        gisaid_mutation_counts=config['gisaid_mutation_counts'],
     output:
         summary = os.path.join(config['summary_dir'], 'summary.md')
     run:
@@ -90,7 +94,7 @@ rule make_summary:
             Here is the Markdown output of each Jupyter notebook in the
             workflow:
 
-            1. Get prior RBD DMS mutation-level binding and expression data and BA.2 barcode-variant lookup table from [prior DMS study](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron).
+            1. Get prior RBD DMS mutation-level binding and expression data and BA.2 barcode-variant lookup table from [prior DMS study](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron), and SARS-CoV-1 ACE2-binding DMS data from [this unpublished repo](https://github.com/tstarrlab/SARSr-CoV-RBD_DMS).
             
             2. Process PacBio CCSs for [Omicron BQ.1.1]({path(input.process_ccs_BQ11)}), and [Omicron XBB.1.5]({path(input.process_ccs_XBB15)}). Creates barcode-variant lookup tables for each background: [BQ.1.1]({path(input.barcode_variant_table_BQ11)}), [XBB.1.5]({path(input.barcode_variant_table_XBB15)}).
             
@@ -105,9 +109,11 @@ rule make_summary:
             6. [Derive final genotype-level phenotypes from replicate barcoded sequences]({path(input.collapse_scores)}).
                Generates final phenotypes, recorded in [this file]({path(input.mut_phenos_file)}).
             
-            7. [Analyze patterns of epistasis in the DMS data and in SARS-CoV-2 genomic data]({path(input.epistatic_shifts)}).
+            7. [Count mutations in GISAID RBD sequences]({path(input.gisaid_rbd_mutations)}) to create [this counts file]({path(input.gisaid_mutation_counts)}).
             
-            8. Make interactive data visualizations, available [here](https://tstarrlab.github.io/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/)
+            8. [Analyze patterns of epistasis in the DMS data and in SARS-CoV-2 genomic data]({path(input.epistatic_shifts)}).
+            
+            9. Make interactive data visualizations, available [here](https://tstarrlab.github.io/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/)
 
             """
             ).strip())
@@ -158,6 +164,7 @@ rule epistatic_shifts:
     input:
         config['final_variant_scores_mut_file'],
         config['mut_antibody_escape'],
+        config['SARSr_DMS']
     output:
         config['JSD_file'],
         config['JSD_expr_file'],
@@ -176,6 +183,17 @@ rule epistatic_shifts:
         mv {params.md_files} {output.md_files}
         """
 
+rule gisaid_rbd_mutations:
+    input:
+        config['gisaid_spikes'],
+        config['wildtype_sequence'],
+    output:
+        config['gisaid_mutation_counts'],
+        nb_markdown=nb_markdown('gisaid_rbd_mutations.ipynb'),
+    params:
+        nb='gisaid_rbd_mutations.ipynb'
+    shell:
+        "python scripts/run_nb.py {params.nb} {output.nb_markdown}"
 
 rule collapse_scores:
     input:
@@ -261,6 +279,13 @@ rule count_variants:
         "python scripts/run_nb.py {params.nb} {output.nb_markdown}"
 
 
+rule get_SARSr_DMS:
+    """Download SARS-related CoV mutation ACE2-binding and expression from URL."""
+    output:
+        file=config['SARSr_DMS']
+    run:
+        urllib.request.urlretrieve(config['SARSr_DMS_url'], output.file)
+        
 rule get_mut_bind_expr:
     """Download SARS-CoV-2 mutation ACE2-binding and expression from URL."""
     output:

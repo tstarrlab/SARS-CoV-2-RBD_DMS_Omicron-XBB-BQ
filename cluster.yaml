@@ -31,3 +31,7 @@ fit_titrations:
   time: 0-1
   mem: 100000
   
+gisaid_rbd_mutations:
+  cpus: 12
+  time: 0-12
+  mem: 100000

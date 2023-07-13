@@ -26,13 +26,20 @@ barcode_runs: data/barcode_runs.csv
 wildtype_sequence: data/wildtype_sequence.fasta
 site_number_offset: 330  # add this to sequential sites to get RBD numbering
 
+# spike sequences from gisaid
+
+
+
 # pdbs for mapping, analysis
-pdb_6m0j: data/6m0j.pdb
+pdb_6m0j: data/6m0j.pdb #WH1 bound to ACE2 xtal
+pdb_8if2: data/8if2.pdb #BQ11 boudn to ACE2 xtal
+pdb_8iov: data/8iov.pdb #XBB.1 bound to ACE2, cryoEM local refinement
 
 # URLs from which we download binding & expression of mutants & variants and surveillance count data
 mut_bind_expr_url: https://media.githubusercontent.com/media/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/main/results/final_variant_scores/final_variant_scores.csv
 mut_antibody_escape_url: https://media.githubusercontent.com/media/jbloomlab/SARS2_RBD_Ab_escape_maps/main/processed_data/escape_data.csv
 codon_variant_table_file_BA2_url: https://media.githubusercontent.com/media/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron/main/results/variants/codon_variant_table_BA2.csv
+SARSr_DMS_url: https://raw.githubusercontent.com/tstarrlab/SARSr-CoV-RBD_DMS/main/results/final_variant_scores/final_variant_scores_lib40_41.csv
 
 
 # output directories / files
@@ -41,6 +48,7 @@ mut_bind_expr: results/prior_DMS_data/mutant_ACE2binding_expression.csv
 mut_antibody_escape: results/prior_DMS_data/mutant_antibody-escape.csv
 mut_clade_occurrence: results/prior_DMS_data/mutant_clade_occurrence.csv
 codon_variant_table_file_BA2: results/prior_DMS_data/codon_variant_table_BA2.csv
+SARSr_DMS: results/prior_DMS_data/SARSr-CoV_DMS.csv
 figs_dir: results/figures
 ccs_dir: results/ccs
 process_ccs_dir: results/process_ccs
@@ -63,6 +71,12 @@ epistatic_shifts_dir: results/epistatic_shifts
 JSD_file: results/epistatic_shifts/JSD_by_target.csv
 JSD_expr_file: results/epistatic_shifts/JSD_EXPRESSION_by_target.csv
 visualization_dir: docs/_includes
+
+gisaid_mutations_dir: results/GISAID_mutations
+gisaid_spikes: data/hCoV-19_spikeprot0702.tar.xz
+gisaid_mutation_counts: results/GISAID_mutations/mutation_counts.csv
+
+
 
 
 # parameters for running PacBio `ccs` program

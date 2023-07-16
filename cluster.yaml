@@ -22,8 +22,8 @@ count_variants:
   mem: 100000
 
 calculate_expression:
-  cpus: 8
-  time: 0-4
+  cpus: 12
+  time: 0-10
   mem: 100000
 
 fit_titrations:

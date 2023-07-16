@@ -41,7 +41,7 @@ sessionInfo()
 
     ## R version 4.1.3 (2022-03-10)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Rocky Linux 8.5 (Green Obsidian)
+    ## Running under: Rocky Linux 8.8 (Green Obsidian)
     ## 
     ## Matrix products: default
     ## BLAS/LAPACK: /uufs/chpc.utah.edu/sys/spack/linux-rocky8-nehalem/gcc-8.5.0/intel-oneapi-mkl-2021.4.0-h43nkmwzvaltaa6ii5l7n6e7ruvjbmnv/mkl/2021.4.0/lib/intel64/libmkl_rt.so.1
@@ -70,7 +70,7 @@ sessionInfo()
     ## [17] lifecycle_1.0.3  munsell_0.5.0    gtable_0.3.0     cellranger_1.1.0
     ## [21] rvest_1.0.2      evaluate_0.15    knitr_1.37       tzdb_0.2.0      
     ## [25] fastmap_1.1.0    fansi_1.0.2      broom_0.7.12     Rcpp_1.0.8      
-    ## [29] backports_1.4.1  scales_1.2.1     jsonlite_1.8.4   fs_1.5.2        
+    ## [29] backports_1.4.1  scales_1.2.1     jsonlite_1.8.7   fs_1.5.2        
     ## [33] hms_1.1.1        digest_0.6.29    stringi_1.7.6    grid_4.1.3      
     ## [37] cli_3.6.0        tools_4.1.3      magrittr_2.0.2   crayon_1.5.0    
     ## [41] pkgconfig_2.0.3  ellipsis_0.3.2   xml2_1.3.3       reprex_2.0.1    
@@ -184,20 +184,20 @@ for(i in 1:nrow(barcode_runs)){
     ## [1] "read:cell ratio for pool2 TiteSeq_03_bin2 is 1.74327254945442"
     ## [1] "read:cell ratio for pool2 TiteSeq_03_bin3 is 1.56574929354271"
     ## [1] "read:cell ratio for pool2 TiteSeq_03_bin4 is 2.0357423067168"
-    ## [1] "reads < cells for pool2 TiteSeq_04_bin1 , un-normalized (ratio 0.830115405865369 )"
-    ## [1] "reads < cells for pool2 TiteSeq_04_bin2 , un-normalized (ratio 0.703865013086123 )"
-    ## [1] "reads < cells for pool2 TiteSeq_04_bin3 , un-normalized (ratio 0.789483968481582 )"
+    ## [1] "read:cell ratio for pool2 TiteSeq_04_bin1 is 1.0396138590213"
+    ## [1] "reads < cells for pool2 TiteSeq_04_bin2 , un-normalized (ratio 0.978200002006345 )"
+    ## [1] "read:cell ratio for pool2 TiteSeq_04_bin3 is 1.07504680058379"
     ## [1] "read:cell ratio for pool2 TiteSeq_04_bin4 is 1.03627359442166"
     ## [1] "read:cell ratio for pool2 TiteSeq_05_bin1 is 1.08915900374822"
-    ## [1] "reads < cells for pool2 TiteSeq_05_bin2 , un-normalized (ratio 0.889957084273049 )"
-    ## [1] "reads < cells for pool2 TiteSeq_05_bin3 , un-normalized (ratio 0.809656744104087 )"
+    ## [1] "read:cell ratio for pool2 TiteSeq_05_bin2 is 1.06522918087827"
+    ## [1] "read:cell ratio for pool2 TiteSeq_05_bin3 is 1.02526832666225"
     ## [1] "reads < cells for pool2 TiteSeq_05_bin4 , un-normalized (ratio 0.879569255087927 )"
-    ## [1] "reads < cells for pool2 TiteSeq_06_bin1 , un-normalized (ratio 0.00463286579485793 )"
-    ## [1] "reads < cells for pool2 TiteSeq_06_bin2 , un-normalized (ratio 0.565287748351174 )"
+    ## [1] "read:cell ratio for pool2 TiteSeq_06_bin1 is 1.33968731800367"
+    ## [1] "reads < cells for pool2 TiteSeq_06_bin2 , un-normalized (ratio 0.918613959031045 )"
     ## [1] "read:cell ratio for pool2 TiteSeq_06_bin3 is 1.72130426587925"
     ## [1] "read:cell ratio for pool2 TiteSeq_06_bin4 is 1.51010101010101"
-    ## [1] "reads < cells for pool2 TiteSeq_07_bin1 , un-normalized (ratio 0.00566732624880815 )"
-    ## [1] "reads < cells for pool2 TiteSeq_07_bin2 , un-normalized (ratio 0.0710638646952163 )"
+    ## [1] "reads < cells for pool2 TiteSeq_07_bin1 , un-normalized (ratio 0.0316707538927312 )"
+    ## [1] "read:cell ratio for pool2 TiteSeq_07_bin2 is 1.73696865461808"
     ## [1] "read:cell ratio for pool2 TiteSeq_07_bin3 is 3.02083333333333"
     ## [1] "reads < cells for pool2 TiteSeq_07_bin4 , un-normalized (ratio 0.415929203539823 )"
     ## [1] "read:cell ratio for pool2 TiteSeq_08_bin1 is 2.03326858831322"
@@ -314,23 +314,13 @@ fit.titration <- function(y.vals,x.vals,count.vals,min.cfu=cutoff,
 }
 
 #fit titration to huACE2 Titeseq data for each barcode
-dt[library=="pool1",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
+dt[,c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
      tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
                                      TiteSeq_05_meanbin,TiteSeq_06_meanbin,TiteSeq_07_meanbin,TiteSeq_08_meanbin,
                                      TiteSeq_09_meanbin),
                             x.vals=samples_TiteSeq$conc,
                             count.vals=c(TiteSeq_01_totalcount,TiteSeq_02_totalcount,TiteSeq_03_totalcount,TiteSeq_04_totalcount,
                                          TiteSeq_05_totalcount,TiteSeq_06_totalcount,TiteSeq_07_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
-              error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
-
-#temp fit pool2 without the underseampled bin1 samples?
-dt[library=="pool2",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
-     tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
-                                     TiteSeq_05_meanbin,TiteSeq_08_meanbin,
-                                     TiteSeq_09_meanbin),
-                            x.vals=samples_TiteSeq$conc[c(1,2,3,4,5,8,9)],
-                            count.vals=c(TiteSeq_01_totalcount,TiteSeq_02_totalcount,TiteSeq_03_totalcount,TiteSeq_04_totalcount,
-                                         TiteSeq_05_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
               error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
 ```
 
@@ -342,7 +332,7 @@ across our measurement range, and spot check curves whose fit parameters
 hit the different boundary conditions of the fit variables.
 
 We successfully generated *K*<sub>D</sub> estimates for 172265 of our
-pool1 barcodes (54.72%), and 197997 of our pool2 barcodes (59.16%).
+pool1 barcodes (54.72%), and 132987 of our pool2 barcodes (39.74%).
 
 Why were estimates not returned for some barcodes? The histograms below
 show that many barcodes with unsuccessful titration fits have lower
@@ -607,7 +597,7 @@ grid.arrange(p1,ncol=1)
 invisible(dev.print(pdf, paste(config$Titeseq_Kds_dir,"/violin-plot_log10Ka-by-target.pdf",sep="")))
 ```
 
-We have generated binding measurements for 56.34% of the barcodes in our
+We have generated binding measurements for 46.8% of the barcodes in our
 libraries.
 
 ## Data Output

@@ -186,23 +186,13 @@ fit.titration <- function(y.vals,x.vals,count.vals,min.cfu=cutoff,
 }
 
 #fit titration to huACE2 Titeseq data for each barcode
-dt[library=="pool1",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
+dt[,c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
      tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
                                      TiteSeq_05_meanbin,TiteSeq_06_meanbin,TiteSeq_07_meanbin,TiteSeq_08_meanbin,
                                      TiteSeq_09_meanbin),
                             x.vals=samples_TiteSeq$conc,
                             count.vals=c(TiteSeq_01_totalcount,TiteSeq_02_totalcount,TiteSeq_03_totalcount,TiteSeq_04_totalcount,
                                          TiteSeq_05_totalcount,TiteSeq_06_totalcount,TiteSeq_07_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
-              error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
-
-#temp fit pool2 without the underseampled bin1 samples?
-dt[library=="pool2",c("Kd_ACE2","Kd_SE_ACE2","response_ACE2","baseline_ACE2","nMSR_ACE2") :=
-     tryCatch(fit.titration(y.vals=c(TiteSeq_01_meanbin,TiteSeq_02_meanbin,TiteSeq_03_meanbin,TiteSeq_04_meanbin,
-                                     TiteSeq_05_meanbin,TiteSeq_08_meanbin,
-                                     TiteSeq_09_meanbin),
-                            x.vals=samples_TiteSeq$conc[c(1,2,3,4,5,8,9)],
-                            count.vals=c(TiteSeq_01_totalcount,TiteSeq_02_totalcount,TiteSeq_03_totalcount,TiteSeq_04_totalcount,
-                                         TiteSeq_05_totalcount,TiteSeq_08_totalcount,TiteSeq_09_totalcount)),
               error=function(e){list(as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA),as.numeric(NA))}),by=c("library","barcode")]
 
 ```

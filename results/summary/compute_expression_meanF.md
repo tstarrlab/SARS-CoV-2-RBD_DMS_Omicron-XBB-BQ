@@ -41,7 +41,7 @@ sessionInfo()
 
     ## R version 4.1.3 (2022-03-10)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Rocky Linux 8.5 (Green Obsidian)
+    ## Running under: Rocky Linux 8.8 (Green Obsidian)
     ## 
     ## Matrix products: default
     ## BLAS/LAPACK: /uufs/chpc.utah.edu/sys/spack/linux-rocky8-nehalem/gcc-8.5.0/intel-oneapi-mkl-2021.4.0-h43nkmwzvaltaa6ii5l7n6e7ruvjbmnv/mkl/2021.4.0/lib/intel64/libmkl_rt.so.1
@@ -73,7 +73,7 @@ sessionInfo()
     ## [21] gtable_0.3.0     cellranger_1.1.0 rvest_1.0.2      evaluate_0.15   
     ## [25] knitr_1.37       tzdb_0.2.0       fastmap_1.1.0    fansi_1.0.2     
     ## [29] broom_0.7.12     Rcpp_1.0.8       backports_1.4.1  scales_1.2.1    
-    ## [33] jsonlite_1.8.4   fs_1.5.2         hms_1.1.1        digest_0.6.29   
+    ## [33] jsonlite_1.8.7   fs_1.5.2         hms_1.1.1        digest_0.6.29   
     ## [37] stringi_1.7.6    grid_4.1.3       cli_3.6.0        tools_4.1.3     
     ## [41] magrittr_2.0.2   crayon_1.5.0     pkgconfig_2.0.3  Matrix_1.4-0    
     ## [45] ellipsis_0.3.2   xml2_1.3.3       reprex_2.0.1     lubridate_1.8.0 
@@ -136,11 +136,11 @@ for(i in 1:nrow(barcode_runs)){
 }
 ```
 
-    ## [1] "reads < cells for pool1 SortSeq_bin1 , un-normalized (ratio 0.495157009956729 )"
-    ## [1] "reads < cells for pool1 SortSeq_bin2 , un-normalized (ratio 0.0639809175059633 )"
+    ## [1] "reads < cells for pool1 SortSeq_bin1 , un-normalized (ratio 0.76187758248084 )"
+    ## [1] "reads < cells for pool1 SortSeq_bin2 , un-normalized (ratio 0.0487709222590868 )"
     ## [1] "read:cell ratio for pool1 SortSeq_bin3 is 2.04768080719533"
     ## [1] "read:cell ratio for pool1 SortSeq_bin4 is 2.40867085400019"
-    ## [1] "reads < cells for pool2 SortSeq_bin1 , un-normalized (ratio 0.843767995607398 )"
+    ## [1] "reads < cells for pool2 SortSeq_bin1 , un-normalized (ratio 0.967228836421696 )"
     ## [1] "reads < cells for pool2 SortSeq_bin2 , un-normalized (ratio 0.998270746784852 )"
     ## [1] "read:cell ratio for pool2 SortSeq_bin3 is 1.0403446586314"
     ## [1] "read:cell ratio for pool2 SortSeq_bin4 is 1.32939195096242"
@@ -262,7 +262,7 @@ grid.arrange(p1,ncol=1)
 invisible(dev.print(pdf, paste(config$expression_sortseq_dir,"/violin-plot_meanF-by-target.pdf",sep="")))
 ```
 
-We have generated expression measurements for 59.68% of the barcodes in
+We have generated expression measurements for 60.2% of the barcodes in
 our libraries.
 
 ## Data Output

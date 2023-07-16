@@ -758,7 +758,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>4.0</td>
       <td>230518</td>
       <td>1938463</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b1_S61_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b1_S61_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X87_230712_A00421_0570_BHFTYKDRX3_S87_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X87_230712_A00421_0570_BHFTYKDRX3_S87_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -768,7 +768,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>4.0</td>
       <td>230518</td>
       <td>1893991</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b2_S62_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b2_S62_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X88_230712_A00421_0570_BHFTYKDRX3_S88_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X88_230712_A00421_0570_BHFTYKDRX3_S88_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -778,7 +778,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>4.0</td>
       <td>230518</td>
       <td>4232319</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b3_S63_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s4_b3_S63_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X89_230712_A00421_0570_BHFTYKDRX3_S89_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X89_230712_A00421_0570_BHFTYKDRX3_S89_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -808,7 +808,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>5.0</td>
       <td>230518</td>
       <td>4405145</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s5_b2_S66_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s5_b2_S66_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X90_230712_A00421_0570_BHFTYKDRX3_S90_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X90_230712_A00421_0570_BHFTYKDRX3_S90_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -818,7 +818,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>5.0</td>
       <td>230518</td>
       <td>1691129</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s5_b3_S67_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s5_b3_S67_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X91_230712_A00421_0570_BHFTYKDRX3_S91_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X91_230712_A00421_0570_BHFTYKDRX3_S91_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -838,7 +838,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>6.0</td>
       <td>230518</td>
       <td>6859685</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s6_b1_S69_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X92_230712_A00421_0570_BHFTYKDRX3_S92_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X92_230712_A00421_0570_BHFTYKDRX3_S92_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -848,7 +848,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>6.0</td>
       <td>230518</td>
       <td>2433550</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s6_b2_S70_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s6_b2_S70_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X93_230712_A00421_0570_BHFTYKDRX3_S93_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X93_230712_A00421_0570_BHFTYKDRX3_S93_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -878,7 +878,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>7.0</td>
       <td>230518</td>
       <td>9527244</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s7_b1_S73_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -888,7 +888,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>7.0</td>
       <td>230518</td>
       <td>353513</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_s7_b2_S74_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X95_230712_A00421_0570_BHFTYKDRX3_S95_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X95_230712_A00421_0570_BHFTYKDRX3_S95_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -998,7 +998,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>NaN</td>
       <td>230517</td>
       <td>1639896</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_1_S37_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_2_S38_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_3_S39_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_1_S37_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_2_S38_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin1_3_S39_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X85_230712_A00421_0570_BHFTYKDRX3_S85_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X85_230712_A00421_0570_BHFTYKDRX3_S85_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool1</td>
@@ -1008,7 +1008,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>NaN</td>
       <td>230517</td>
       <td>3200001</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin2_1_S40_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin2_2_S41_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230517_exp1_RBD_bin2_3_S42_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool1</td>
@@ -1038,7 +1038,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>NaN</td>
       <td>230518</td>
       <td>1344078</td>
-      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_1_S49_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_2_S50_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_3_S51_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_1_S49_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_2_S50_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/starr-group1/sequencing/TNS/2023/230531_Omicron-xbb-bq_bc/230518_exp2_RBD_bin1_3_S51_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X96_230712_A00421_0570_BHFTYKDRX3_S96_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X96_230712_A00421_0570_BHFTYKDRX3_S96_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -1405,18 +1405,18 @@ display(HTML(fates
       <th rowspan="40" valign="top">pool1</th>
       <th>SortSeq_bin1</th>
       <td>0</td>
-      <td>175931</td>
-      <td>186155</td>
-      <td>13338</td>
-      <td>812006</td>
+      <td>275542</td>
+      <td>225114</td>
+      <td>24595</td>
+      <td>1249400</td>
     </tr>
     <tr>
       <th>SortSeq_bin2</th>
       <td>0</td>
-      <td>33981</td>
-      <td>45118</td>
-      <td>3299</td>
-      <td>204739</td>
+      <td>4610055</td>
+      <td>339262</td>
+      <td>97434</td>
+      <td>156067</td>
     </tr>
     <tr>
       <th>SortSeq_bin3</th>
@@ -1726,10 +1726,10 @@ display(HTML(fates
       <th rowspan="40" valign="top">pool2</th>
       <th>SortSeq_bin1</th>
       <td>0</td>
-      <td>244570</td>
-      <td>247847</td>
-      <td>18866</td>
-      <td>1134090</td>
+      <td>281596</td>
+      <td>262324</td>
+      <td>23084</td>
+      <td>1300031</td>
     </tr>
     <tr>
       <th>SortSeq_bin2</th>
@@ -1854,26 +1854,26 @@ display(HTML(fates
     <tr>
       <th>TiteSeq_04_bin1</th>
       <td>0</td>
-      <td>229257</td>
-      <td>362652</td>
-      <td>26750</td>
-      <td>1609148</td>
+      <td>289896</td>
+      <td>396783</td>
+      <td>36709</td>
+      <td>2015253</td>
     </tr>
     <tr>
       <th>TiteSeq_04_bin2</th>
       <td>0</td>
-      <td>184917</td>
-      <td>299731</td>
-      <td>20135</td>
-      <td>1333114</td>
+      <td>261532</td>
+      <td>343549</td>
+      <td>32662</td>
+      <td>1852702</td>
     </tr>
     <tr>
       <th>TiteSeq_04_bin3</th>
       <td>0</td>
-      <td>499760</td>
-      <td>874583</td>
-      <td>49119</td>
-      <td>3341348</td>
+      <td>690448</td>
+      <td>974481</td>
+      <td>77236</td>
+      <td>4549941</td>
     </tr>
     <tr>
       <th>TiteSeq_04_bin4</th>
@@ -1894,18 +1894,18 @@ display(HTML(fates
     <tr>
       <th>TiteSeq_05_bin2</th>
       <td>0</td>
-      <td>588984</td>
-      <td>873226</td>
-      <td>56567</td>
-      <td>3920390</td>
+      <td>711720</td>
+      <td>940684</td>
+      <td>74526</td>
+      <td>4692489</td>
     </tr>
     <tr>
       <th>TiteSeq_05_bin3</th>
       <td>0</td>
-      <td>219135</td>
-      <td>305984</td>
-      <td>18492</td>
-      <td>1369234</td>
+      <td>280143</td>
+      <td>338405</td>
+      <td>26740</td>
+      <td>1733861</td>
     </tr>
     <tr>
       <th>TiteSeq_05_bin4</th>
@@ -1918,18 +1918,18 @@ display(HTML(fates
     <tr>
       <th>TiteSeq_06_bin1</th>
       <td>0</td>
-      <td>4600</td>
-      <td>8915</td>
-      <td>505</td>
-      <td>31780</td>
+      <td>1570493</td>
+      <td>766542</td>
+      <td>222027</td>
+      <td>9189833</td>
     </tr>
     <tr>
       <th>TiteSeq_06_bin2</th>
       <td>0</td>
-      <td>215338</td>
-      <td>293296</td>
-      <td>18810</td>
-      <td>1375656</td>
+      <td>358980</td>
+      <td>366112</td>
+      <td>38877</td>
+      <td>2235493</td>
     </tr>
     <tr>
       <th>TiteSeq_06_bin3</th>
@@ -1950,18 +1950,18 @@ display(HTML(fates
     <tr>
       <th>TiteSeq_07_bin1</th>
       <td>0</td>
-      <td>8028</td>
-      <td>11551</td>
-      <td>901</td>
-      <td>53994</td>
+      <td>7713326</td>
+      <td>602714</td>
+      <td>171070</td>
+      <td>301735</td>
     </tr>
     <tr>
       <th>TiteSeq_07_bin2</th>
       <td>0</td>
-      <td>4036</td>
-      <td>6246</td>
-      <td>348</td>
-      <td>25122</td>
+      <td>95457</td>
+      <td>51875</td>
+      <td>14500</td>
+      <td>614041</td>
     </tr>
     <tr>
       <th>TiteSeq_07_bin3</th>

@@ -15,6 +15,9 @@ Tyler Starr
   id="toc-correlations-among-backgrounds-and-to-prior-wuhan-hu-1-dms-data">Correlations
   among backgrounds and to prior Wuhan-Hu-1 DMS data</a>
 - <a href="#heatmaps" id="toc-heatmaps">Heatmaps!</a>
+- <a href="#comparing-deletion-effects-to-mutations"
+  id="toc-comparing-deletion-effects-to-mutations">Comparing deletion
+  effects to mutations</a>
 
 This notebook reads in the per-barcode titration Kds and expression
 measurements from the `compute_binding_Kd` and
@@ -24,7 +27,7 @@ generates some coverage and QC analyses.
 
 ``` r
 #list of packages to install/load
-packages = c("yaml","data.table","tidyverse","gridExtra","knitr")
+packages = c("yaml","data.table","tidyverse","gridExtra","grid","bio3d","ggridges","ggrepel","GGally")
 #install any packages not already installed
 installed_packages <- packages %in% rownames(installed.packages())
 if(any(installed_packages == F)){
@@ -46,6 +49,11 @@ config <- read_yaml("config.yaml")
 if(!file.exists(config$final_variant_scores_dir)){
   dir.create(file.path(config$final_variant_scores_dir))
 }
+
+#make pdb output directory
+if(!file.exists(paste(config$final_variant_scores_dir,"/pdbs/",sep=""))){
+  dir.create(file.path(paste(config$final_variant_scores_dir,"/pdbs/",sep="")))
+}
 ```
 
 Session info for reproducing environment:
@@ -56,7 +64,7 @@ sessionInfo()
 
     ## R version 4.1.3 (2022-03-10)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Rocky Linux 8.5 (Green Obsidian)
+    ## Running under: Rocky Linux 8.8 (Green Obsidian)
     ## 
     ## Matrix products: default
     ## BLAS/LAPACK: /uufs/chpc.utah.edu/sys/spack/linux-rocky8-nehalem/gcc-8.5.0/intel-oneapi-mkl-2021.4.0-h43nkmwzvaltaa6ii5l7n6e7ruvjbmnv/mkl/2021.4.0/lib/intel64/libmkl_rt.so.1
@@ -70,28 +78,30 @@ sessionInfo()
     ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
     ## 
     ## attached base packages:
-    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+    ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] knitr_1.37        gridExtra_2.3     forcats_0.5.1     stringr_1.4.0    
-    ##  [5] dplyr_1.0.8       purrr_0.3.4       readr_2.1.2       tidyr_1.2.0      
-    ##  [9] tibble_3.1.6      ggplot2_3.4.1     tidyverse_1.3.1   data.table_1.14.2
-    ## [13] yaml_2.3.5       
+    ##  [1] GGally_2.1.2      ggrepel_0.9.1     ggridges_0.5.4    bio3d_2.4-4      
+    ##  [5] gridExtra_2.3     forcats_0.5.1     stringr_1.4.0     dplyr_1.0.8      
+    ##  [9] purrr_0.3.4       readr_2.1.2       tidyr_1.2.0       tibble_3.1.6     
+    ## [13] ggplot2_3.4.1     tidyverse_1.3.1   data.table_1.14.2 yaml_2.3.5       
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] tidyselect_1.1.2 xfun_0.30        haven_2.4.3      colorspace_2.0-3
-    ##  [5] vctrs_0.5.2      generics_0.1.2   htmltools_0.5.2  utf8_1.2.2      
-    ##  [9] rlang_1.0.6      pillar_1.7.0     glue_1.6.2       withr_2.5.0     
-    ## [13] DBI_1.1.2        dbplyr_2.1.1     modelr_0.1.8     readxl_1.3.1    
-    ## [17] lifecycle_1.0.3  munsell_0.5.0    gtable_0.3.0     cellranger_1.1.0
-    ## [21] rvest_1.0.2      evaluate_0.15    tzdb_0.2.0       fastmap_1.1.0   
-    ## [25] fansi_1.0.2      broom_0.7.12     Rcpp_1.0.8       backports_1.4.1 
-    ## [29] scales_1.2.1     jsonlite_1.8.4   fs_1.5.2         hms_1.1.1       
-    ## [33] digest_0.6.29    stringi_1.7.6    grid_4.1.3       cli_3.6.0       
-    ## [37] tools_4.1.3      magrittr_2.0.2   crayon_1.5.0     pkgconfig_2.0.3 
-    ## [41] ellipsis_0.3.2   xml2_1.3.3       reprex_2.0.1     lubridate_1.8.0 
-    ## [45] rstudioapi_0.13  assertthat_0.2.1 rmarkdown_2.13   httr_1.4.6      
-    ## [49] R6_2.5.1         compiler_4.1.3
+    ##  [1] Rcpp_1.0.8         lubridate_1.8.0    assertthat_0.2.1   digest_0.6.29     
+    ##  [5] utf8_1.2.2         R6_2.5.1           cellranger_1.1.0   plyr_1.8.6        
+    ##  [9] backports_1.4.1    reprex_2.0.1       evaluate_0.15      httr_1.4.6        
+    ## [13] pillar_1.7.0       rlang_1.0.6        readxl_1.3.1       rstudioapi_0.13   
+    ## [17] rmarkdown_2.13     munsell_0.5.0      broom_0.7.12       compiler_4.1.3    
+    ## [21] modelr_0.1.8       xfun_0.30          pkgconfig_2.0.3    htmltools_0.5.2   
+    ## [25] tidyselect_1.1.2   reshape_0.8.8      fansi_1.0.2        crayon_1.5.0      
+    ## [29] tzdb_0.2.0         dbplyr_2.1.1       withr_2.5.0        jsonlite_1.8.7    
+    ## [33] gtable_0.3.0       lifecycle_1.0.3    DBI_1.1.2          magrittr_2.0.2    
+    ## [37] scales_1.2.1       cli_3.6.0          stringi_1.7.6      fs_1.5.2          
+    ## [41] xml2_1.3.3         ellipsis_0.3.2     generics_0.1.2     vctrs_0.5.2       
+    ## [45] RColorBrewer_1.1-2 tools_4.1.3        glue_1.6.2         hms_1.1.1         
+    ## [49] parallel_4.1.3     fastmap_1.1.0      colorspace_2.0-3   rvest_1.0.2       
+    ## [53] knitr_1.37         haven_2.4.3
 
 ## Setup
 
@@ -611,6 +621,293 @@ p1
 
 ``` r
 invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/heatmap_SSM_delta-expression-by-target.pdf",sep="")))
+```
+
+## Comparing deletion effects to mutations
+
+Output PDBs colored by the impact of deletion
+
+First, map each to 6m0j structure
+
+``` r
+pdb_wh1 <- read.pdb(file=config$pdb_6m0j)
+```
+
+    ##    PDB has ALT records, taking A only, rm.alt=TRUE
+
+``` r
+#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+for(s in c("Omicron_XBB15","Omicron_BQ11")){
+  b <- rep(0, length(pdb_wh1$atom$b))
+  for(i in 1:nrow(pdb_wh1$atom)){
+    if(pdb_wh1$atom$chain[i]=="E"){
+      res <- pdb_wh1$atom$resno[i]
+      del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
+      if(length(del)>0){
+        b[i] <- del
+      }
+    }
+  }
+  write.pdb(pdb=pdb_wh1, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_WH1-structure.pdb",sep=""), b=b)
+}
+```
+
+Also map each to its own BQ/XBB structure
+
+``` r
+pdb_bq11 <- read.pdb(file=config$pdb_8if2)
+
+#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+for(s in c("Omicron_BQ11")){
+  b <- rep(0, length(pdb_bq11$atom$b))
+  for(i in 1:nrow(pdb_bq11$atom)){
+    if(pdb_bq11$atom$chain[i]=="E"){
+      res <- pdb_bq11$atom$resno[i]
+      del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
+      if(length(del)>0){
+        b[i] <- del
+      }
+    }
+  }
+  write.pdb(pdb=pdb_bq11, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_bq11-structure.pdb",sep=""), b=b)
+}
+```
+
+``` r
+pdb_xbb15 <- read.pdb(file=config$pdb_8iov)
+
+#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+for(s in c("Omicron_XBB15")){
+  b <- rep(0, length(pdb_xbb15$atom$b))
+  for(i in 1:nrow(pdb_xbb15$atom)){
+    if(pdb_xbb15$atom$chain[i]=="E"){
+      res <- pdb_xbb15$atom$resno[i]
+      del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
+      if(length(del)>0){
+        b[i] <- del
+      }
+    }
+  }
+  write.pdb(pdb=pdb_xbb15, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_xbb15-structure.pdb",sep=""), b=b)
+}
+```
+
+Compare effects of deletions in BQ.1.1 to XBB.1.5
+
+``` r
+temp <- dcast(dt_final[target %in% c("Omicron_XBB15","Omicron_BQ11") & mutant=="-",],
+              position ~ target,
+              value.var=c("delta_bind","n_bc_bind"))
+
+p1 <- ggplot(data=temp, aes(y=delta_bind_Omicron_BQ11, x=delta_bind_Omicron_XBB15))+
+  geom_point()+
+  geom_text_repel(aes(label=ifelse((delta_bind_Omicron_BQ11 > -3 & delta_bind_Omicron_XBB15 < -3.5),as.character(position),'')),size=3)+
+  geom_text_repel(aes(label=ifelse((delta_bind_Omicron_BQ11 > -2 & delta_bind_Omicron_XBB15 < -2.5),as.character(position),'')),size=3)+
+  geom_text_repel(aes(label=ifelse((delta_bind_Omicron_BQ11 > -1.5 & delta_bind_Omicron_XBB15 < -2),as.character(position),'')),size=3)+
+  theme_classic()+
+  ylab("deletion effect on ACE2 binding, Omicron BQ.1.1")+
+  xlab("deletion effect on ACE2 binding, Omicron XBB.1.5")+
+  geom_abline(slope=1, intercept = 0, linetype = 'dotted',color="red")
+
+grid.arrange(p1,nrow=1)
+```
+
+    ## Warning: Removed 21 rows containing missing values (`geom_point()`).
+
+    ## Warning: Removed 21 rows containing missing values (`geom_text_repel()`).
+    ## Removed 21 rows containing missing values (`geom_text_repel()`).
+    ## Removed 21 rows containing missing values (`geom_text_repel()`).
+
+<img src="collapse_scores_files/figure-gfm/deletion_shifts-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/deletion-ACE2-scatterplot.pdf",sep=""),useDingbats=F))
+```
+
+Look at distributions of effects of deletions at all sites, at antigenic
+sites, and at sites that have indels over SARS2 and sarbecovirus
+evolution
+
+``` r
+#define sites of escape
+dt_mAb <- data.table(read.csv(file=config$mut_antibody_escape,stringsAsFactors = F))
+dt_mAb <- unique(dt_mAb[condition_type=="antibody",.(condition, condition_type, condition_subtype, site, wildtype, site_total_escape)])
+
+dt_mAb[,site_average_escape:=mean(site_total_escape,na.rm=T),by=c("site")]
+
+site_escape <- unique(dt_mAb[,.(wildtype, site, site_average_escape)])
+
+#define sites for labeling as those with an average of 0.05 normalized site-wise escape across all mAbs
+sig_mAb_sites <- unique(site_escape[site_average_escape>0.1, site])
+
+dels_df_mAb_escape <- dt_final[target=="Omicron_XBB15" & mutant=="-" & position %in% sig_mAb_sites,.(wildtype,position,mutant,delta_bind,n_bc_bind)]
+dels_df_mAb_escape[,class:="major sites of mAb escape"]
+
+
+#define sites with deletions in my sarbecovirus alignment:
+dels_sarbeco <- dt_final[target=="Omicron_XBB15" & mutant=="-" & position %in% c(444:450, 473:490),.(wildtype,position,mutant,delta_bind,n_bc_bind)]
+dels_sarbeco[,class:="deletions in sarbeco alignment"]
+
+dels_sarbeco_excl2 <- dt_final[target=="Omicron_XBB15" & mutant=="-" & position %in% c(445:450, 478, 482:490),.(wildtype,position,mutant,delta_bind,n_bc_bind)]
+dels_sarbeco_excl2[,class:="deletions in sarbeco alignment (exclude clade2)"]
+
+dels_df <- dt_final[target=="Omicron_XBB15" & mutant=="-",.(wildtype,position,mutant,delta_bind,n_bc_bind)]
+dels_df[,class:="all deletions"]
+
+dels_df <- rbind(rbind(rbind(dels_df,dels_df_mAb_escape),dels_sarbeco),dels_sarbeco_excl2)
+
+dels_df$class <- factor(dels_df$class, levels=unique(dels_df$class))
+
+# Calculate median and interquartile range for each class
+summary_data <- dels_df %>%
+  group_by(class) %>%
+  summarize(
+    median = median(delta_bind,na.rm=T),
+    lower = quantile(delta_bind, 0.25,na.rm=T),
+    upper = quantile(delta_bind, 0.75,na.rm=T)
+  )
+
+p1 <- ggplot(data=dels_df, aes(y=delta_bind, x=class))+
+  geom_violin(trim=FALSE, adjust=0.75)+
+  geom_linerange(data = summary_data, aes(y=median, ymin = lower, ymax = upper), color = "gray50", size = 1) +
+  stat_summary(fun = "median", geom = "point", color = "black", size = 3) +
+  labs(x="",y="delta-log10Kd (XBB.1.5)")+
+  theme_classic()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+    ## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+    ## ℹ Please use `linewidth` instead.
+
+``` r
+grid.arrange(p1,nrow=1)
+```
+
+    ## Warning: Removed 9 rows containing non-finite values (`stat_ydensity()`).
+
+    ## Warning: Removed 9 rows containing non-finite values (`stat_summary()`).
+
+<img src="collapse_scores_files/figure-gfm/deletion_dfe_comparisons-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/deletion-effects_violinplot.pdf",sep=""),useDingbats=F))
+
+wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="major sites of mAb escape",delta_bind])
+```
+
+    ## 
+    ##  Wilcoxon rank sum test with continuity correction
+    ## 
+    ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "major sites of mAb escape", delta_bind]
+    ## W = 3746, p-value = 0.4569
+    ## alternative hypothesis: true location shift is not equal to 0
+
+``` r
+wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="deletions in sarbeco alignment",delta_bind])
+```
+
+    ## 
+    ##  Wilcoxon rank sum test with continuity correction
+    ## 
+    ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "deletions in sarbeco alignment", delta_bind]
+    ## W = 2245.5, p-value = 0.5747
+    ## alternative hypothesis: true location shift is not equal to 0
+
+``` r
+wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="deletions in sarbeco alignment (exclude clade2)",delta_bind])
+```
+
+    ## 
+    ##  Wilcoxon rank sum test with continuity correction
+    ## 
+    ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "deletions in sarbeco alignment (exclude clade2)", delta_bind]
+    ## W = 1381, p-value = 0.4845
+    ## alternative hypothesis: true location shift is not equal to 0
+
+Compare effects of mutations to effects of deletions.
+
+``` r
+temp <- data.table(site=331:531,median_sub=as.numeric(NA),min_sub=as.numeric(NA),del=as.numeric(NA))
+
+for(i in 1:nrow(temp)){
+  temp[i,"median_sub"] <- median(dt_final[position == temp[i,site] & target=="Omicron_XBB15" & wildtype!=mutant & mutant != "-",delta_bind],na.rm=T)
+  temp[i,"min_sub"] <- min(dt_final[position == temp[i,site] & target=="Omicron_XBB15" & wildtype!=mutant & mutant != "-",delta_bind],na.rm=T)
+  temp[i,"del"] <- dt_final[position == temp[i,site] & target=="Omicron_XBB15" & mutant == "-",delta_bind]
+}
+
+p1 <- ggplot(data=temp, aes(y=median_sub, x=del))+
+  geom_point()+
+  theme_classic()+
+  ylab("median effect on ACE2 binding of amino acid mutation at site")+
+  xlab("effect on ACE2 binding of deletion at site")+
+  geom_abline(slope=1, intercept = 0, linetype = 'dotted',color="red")
+
+p2 <- ggplot(data=temp, aes(y=min_sub, x=del))+
+  geom_point()+
+  theme_classic()+
+  ylab("minimum effect on ACE2 binding of amino acid mutation at site")+
+  xlab("effect on ACE2 binding of deletion at site")+
+  geom_abline(slope=1, intercept = 0, linetype = 'dotted',color="red")
+
+grid.arrange(p1,p2,nrow=1)
+```
+
+    ## Warning: Removed 8 rows containing missing values (`geom_point()`).
+    ## Removed 8 rows containing missing values (`geom_point()`).
+
+<img src="collapse_scores_files/figure-gfm/compare_effects_dels_subs-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/deletion-v-median-sub_scatterplot.pdf",sep=""),useDingbats=F))
+```
+
+Last, load in counts of subs from GISAID alignment (up to something like
+12 million sequences) and compare frequency of deletion mutant to ACE2
+effect
+
+``` r
+gisaid_dels <- data.table(read.csv(file=config$gisaid_mutation_counts,stringsAsFactors = F))[mutant=="-",]
+
+#add in any zero-count dels too?
+for(site in 331:531){
+  if(!(site %in% gisaid_dels$site)){
+    gisaid_dels <- rbind(gisaid_dels, data.table(isite=as.numeric((site-330)),site=site, wildtype=dt_final[target=="Wuhan-Hu-1" & position==site & wildtype==mutant, wildtype], mutant="-", count=0, n_countries=0, frequency=0) )
+  }
+}
+
+gisaid_dels$delta_bind <- as.numeric(NA)
+
+for(i in 1:nrow(gisaid_dels)){
+  gisaid_dels[i,"delta_bind"] <- dt_final[target=="Omicron_XBB15" & position==gisaid_dels[i,site] & mutant=="-",delta_bind]
+}
+
+#add pseudo-frequency to 0-counts
+gisaid_dels[frequency==0,frequency:=min(gisaid_dels[frequency>0,frequency])/5]
+
+p1 <- ggplot(data=gisaid_dels, aes(y=log10(frequency), x=delta_bind))+
+  geom_point(aes(color = ifelse(site %in% sig_mAb_sites, "yes", "no")))+
+  geom_text_repel(aes(label=ifelse((delta_bind > -1.5 & log10(frequency) > -5.75),as.character(site),''), color = ifelse(site %in% sig_mAb_sites, "yes", "no")),size=3, show.legend=FALSE)+
+  geom_text_repel(aes(label=ifelse((delta_bind < -3 & log10(frequency) > -5.75),as.character(site),''), color = ifelse(site %in% sig_mAb_sites, "yes", "no")),size=3, show.legend=FALSE)+
+  scale_color_manual(
+    values = c("no" = "black", "yes" = "red")
+  ) +
+  labs(color = "Site of mAb escape?") +
+  theme_classic()+
+  ylab("log10(GISAID frequency)")+
+  xlab("deletion effect on ACE2 binding, Omicron XBB.1.5")
+
+grid.arrange(p1,nrow=1)
+```
+
+    ## Warning: Removed 8 rows containing missing values (`geom_point()`).
+
+    ## Warning: Removed 8 rows containing missing values (`geom_text_repel()`).
+    ## Removed 8 rows containing missing values (`geom_text_repel()`).
+
+<img src="collapse_scores_files/figure-gfm/SARS2_dels_gisaid-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/gisaid-freq-v-bind-scatterplot.pdf",sep=""),useDingbats=F))
 ```
 
 Save output files.

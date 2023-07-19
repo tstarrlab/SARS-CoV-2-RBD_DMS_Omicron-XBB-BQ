@@ -196,7 +196,7 @@ for(i in 1:nrow(barcode_runs)){
     ## [1] "reads < cells for pool2 TiteSeq_06_bin2 , un-normalized (ratio 0.918613959031045 )"
     ## [1] "read:cell ratio for pool2 TiteSeq_06_bin3 is 1.72130426587925"
     ## [1] "read:cell ratio for pool2 TiteSeq_06_bin4 is 1.51010101010101"
-    ## [1] "reads < cells for pool2 TiteSeq_07_bin1 , un-normalized (ratio 0.0316707538927312 )"
+    ## [1] "reads < cells for pool2 TiteSeq_07_bin1 , un-normalized (ratio 0.432166951953786 )"
     ## [1] "read:cell ratio for pool2 TiteSeq_07_bin2 is 1.73696865461808"
     ## [1] "read:cell ratio for pool2 TiteSeq_07_bin3 is 3.02083333333333"
     ## [1] "reads < cells for pool2 TiteSeq_07_bin4 , un-normalized (ratio 0.415929203539823 )"
@@ -331,8 +331,8 @@ our library barcodes. We will also spot check titration curves from
 across our measurement range, and spot check curves whose fit parameters
 hit the different boundary conditions of the fit variables.
 
-We successfully generated *K*<sub>D</sub> estimates for 172265 of our
-pool1 barcodes (54.72%), and 132987 of our pool2 barcodes (39.74%).
+We successfully generated *K*<sub>D</sub> estimates for 172263 of our
+pool1 barcodes (54.72%), and 174161 of our pool2 barcodes (52.04%).
 
 Why were estimates not returned for some barcodes? The histograms below
 show that many barcodes with unsuccessful titration fits have lower
@@ -597,7 +597,7 @@ grid.arrange(p1,ncol=1)
 invisible(dev.print(pdf, paste(config$Titeseq_Kds_dir,"/violin-plot_log10Ka-by-target.pdf",sep="")))
 ```
 
-We have generated binding measurements for 46.8% of the barcodes in our
+We have generated binding measurements for 53.02% of the barcodes in our
 libraries.
 
 ## Data Output

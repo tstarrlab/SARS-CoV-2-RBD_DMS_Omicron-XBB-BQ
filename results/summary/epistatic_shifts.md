@@ -602,7 +602,7 @@ p1 <- ggplot(data=temp2_WH1, aes(x=Omicron_BQ11, y=Omicron_XBB15))+
 grid.arrange(p1,nrow=1)
 ```
 
-    ## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 5 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 <img src="epistatic_shifts_files/figure-gfm/scatterplots_epistatic-shift-v-WH1_BQ11_XBB15-1.png" style="display: block; margin: auto;" />
@@ -611,7 +611,7 @@ grid.arrange(p1,nrow=1)
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_BQ11-v-XBB15-scatters.pdf",sep=""),useDingbats=F))
 ```
 
-    ## Warning: ggrepel: 4 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 5 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ## Map divergence to pdb structure

@@ -878,7 +878,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>7.0</td>
       <td>230518</td>
       <td>9527244</td>
-      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L002_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool2</td>
@@ -1008,7 +1008,7 @@ display(HTML(barcode_runs.to_html(index=False)))
       <td>NaN</td>
       <td>230517</td>
       <td>3200001</td>
-      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X86_230712_A00421_0570_BHFTYKDRX3_S86_L002_R1_001.fastq.gz]</td>
+      <td>[/uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L001_R1_001.fastq.gz, /uufs/chpc.utah.edu/common/home/u6042467/starr-group1/sequencing/TNS/2023/230628_Aerium-Vir-mAbs_XBB-polish/21073R/Fastq/21073X94_230712_A00421_0570_BHFTYKDRX3_S94_L002_R1_001.fastq.gz]</td>
     </tr>
     <tr>
       <td>pool1</td>
@@ -1413,10 +1413,10 @@ display(HTML(fates
     <tr>
       <th>SortSeq_bin2</th>
       <td>0</td>
-      <td>4610055</td>
-      <td>339262</td>
-      <td>97434</td>
-      <td>156067</td>
+      <td>1196394</td>
+      <td>602714</td>
+      <td>171070</td>
+      <td>6818667</td>
     </tr>
     <tr>
       <th>SortSeq_bin3</th>
@@ -1950,10 +1950,10 @@ display(HTML(fates
     <tr>
       <th>TiteSeq_07_bin1</th>
       <td>0</td>
-      <td>7713326</td>
-      <td>602714</td>
-      <td>171070</td>
-      <td>301735</td>
+      <td>648762</td>
+      <td>339262</td>
+      <td>97434</td>
+      <td>4117360</td>
     </tr>
     <tr>
       <th>TiteSeq_07_bin2</th>

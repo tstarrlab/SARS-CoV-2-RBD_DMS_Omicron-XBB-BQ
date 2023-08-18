@@ -289,8 +289,8 @@ plot_scatter(site=399,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=405,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=406,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=412,"Omicron_BA2","Omicron_BQ11")
-plot_scatter(site=433,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=449,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=452,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=453,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=455,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=456,"Omicron_BA2","Omicron_BQ11")
@@ -332,6 +332,33 @@ invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron
 ```
 
 <img src="epistatic_shifts_files/figure-gfm/scatters_XBB15_diffs-1.png" style="display: block; margin: auto;" />
+Look at interesting sites 453, 455, 456 that might be interacting with
+R493Q reversion
+
+``` r
+par(mfrow=c(5,3))
+plot_scatter(site=453,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=455,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=456,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=453,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=455,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=456,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=453,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=455,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=456,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=453,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=455,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=456,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=453,"Beta","Omicron_BA2")
+plot_scatter(site=455,"Beta","Omicron_BA2")
+plot_scatter(site=456,"Beta","Omicron_BA2")
+```
+
+<img src="epistatic_shifts_files/figure-gfm/scatters_453-455-456-1.png" style="display: block; margin: auto;" />
+
+``` r
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_453-455-456_shifts.pdf",sep=""),useDingbats=F))
+```
 
 ## Line plots of JS divergence from WH1 across RBD sites
 
@@ -602,7 +629,7 @@ p1 <- ggplot(data=temp2_WH1, aes(x=Omicron_BQ11, y=Omicron_XBB15))+
 grid.arrange(p1,nrow=1)
 ```
 
-    ## Warning: ggrepel: 5 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 4 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 <img src="epistatic_shifts_files/figure-gfm/scatterplots_epistatic-shift-v-WH1_BQ11_XBB15-1.png" style="display: block; margin: auto;" />
@@ -611,7 +638,7 @@ grid.arrange(p1,nrow=1)
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_BQ11-v-XBB15-scatters.pdf",sep=""),useDingbats=F))
 ```
 
-    ## Warning: ggrepel: 5 unlabeled data points (too many overlaps). Consider
+    ## Warning: ggrepel: 4 unlabeled data points (too many overlaps). Consider
     ## increasing max.overlaps
 
 ## Map divergence to pdb structure

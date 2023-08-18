@@ -799,7 +799,7 @@ wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="major sit
     ##  Wilcoxon rank sum test with continuity correction
     ## 
     ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "major sites of mAb escape", delta_bind]
-    ## W = 3707, p-value = 0.524
+    ## W = 3673, p-value = 0.5865
     ## alternative hypothesis: true location shift is not equal to 0
 
 ``` r
@@ -810,7 +810,7 @@ wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="deletions
     ##  Wilcoxon rank sum test with continuity correction
     ## 
     ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "deletions in sarbeco alignment", delta_bind]
-    ## W = 2216.5, p-value = 0.51
+    ## W = 2211.5, p-value = 0.4992
     ## alternative hypothesis: true location shift is not equal to 0
 
 ``` r
@@ -821,7 +821,7 @@ wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="deletions
     ##  Wilcoxon rank sum test with continuity correction
     ## 
     ## data:  dels_df[class == "all deletions", delta_bind] and dels_df[class == "deletions in sarbeco alignment (exclude clade2)", delta_bind]
-    ## W = 1375, p-value = 0.4685
+    ## W = 1369, p-value = 0.4529
     ## alternative hypothesis: true location shift is not equal to 0
 
 Compare effects of mutations to effects of deletions.

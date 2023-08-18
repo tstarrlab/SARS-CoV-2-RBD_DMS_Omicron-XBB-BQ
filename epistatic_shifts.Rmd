@@ -231,8 +231,8 @@ plot_scatter(site=399,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=405,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=406,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=412,"Omicron_BA2","Omicron_BQ11")
-plot_scatter(site=433,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=449,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=452,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=453,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=455,"Omicron_BA2","Omicron_BQ11")
 plot_scatter(site=456,"Omicron_BA2","Omicron_BQ11")
@@ -270,6 +270,30 @@ plot_scatter(site=498,"Omicron_BA2","Omicron_XBB15")
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_Omicron_XBB15-v-BA2_shifts.pdf",sep=""),useDingbats=F))
 ```
+Look at interesting sites 453, 455, 456 that might be interacting with R493Q reversion
+
+```{r scatters_453-455-456, echo=T, fig.width=9, fig.height=15, fig.align="center", dpi=300,dev="png"}
+par(mfrow=c(5,3))
+plot_scatter(site=453,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=455,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=456,"Omicron_BA2","Omicron_XBB15")
+plot_scatter(site=453,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=455,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=456,"Omicron_BA1","Omicron_XBB15")
+plot_scatter(site=453,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=455,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=456,"Omicron_BA2","Omicron_BQ11")
+plot_scatter(site=453,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=455,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=456,"Wuhan-Hu-1","Omicron_XBB15")
+plot_scatter(site=453,"Beta","Omicron_BA2")
+plot_scatter(site=455,"Beta","Omicron_BA2")
+plot_scatter(site=456,"Beta","Omicron_BA2")
+
+
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/bg-scatters_453-455-456_shifts.pdf",sep=""),useDingbats=F))
+```
+
 
 ## Line plots of JS divergence from WH1 across RBD sites
 

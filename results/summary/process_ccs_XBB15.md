@@ -2228,7 +2228,15 @@ We make the plot for both all variants and single-mutant / wildtype variants:
 for variant_type in ['all', 'single']:
     p = variants.plotMutFreqs(variant_type, mut_type='codon', samples=None)
     p.draw()
+    plotfile = os.path.join(config['figs_dir'], f"avg_muts_per_variant_"+background+'_'+variant_type+".pdf")
+    print(f"Saving plot to {plotfile}")
+    p.save(plotfile)
+    
 ```
+
+    Saving plot to results/figures/avg_muts_per_variant_XBB15_all.pdf
+    Saving plot to results/figures/avg_muts_per_variant_XBB15_single.pdf
+
 
 We can also use heat maps to examine the extent to which specific amino-acid or codon mutations are over-represented.
 These heat maps are large, so we make them just for all variants and the merge of all libraries:

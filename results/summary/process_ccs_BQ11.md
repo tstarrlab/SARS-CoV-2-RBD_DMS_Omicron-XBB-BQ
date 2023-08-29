@@ -1226,12 +1226,14 @@ p = (
     scale_color_manual(values=CBPALETTE, guide=False)
     )
 
-plotfile = os.path.join(config['figs_dir'], 'empirical_CCS_accuracy.pdf')
+plotfile = os.path.join(config['figs_dir'], 'empirical_CCS_accuracy_' + background + '.pdf')
 print(f"Saving plot to {plotfile}")
 _ = p.draw()
+p.save(plotfile)
+
 ```
 
-    Saving plot to results/figures/empirical_CCS_accuracy.pdf
+    Saving plot to results/figures/empirical_CCS_accuracy_BQ11.pdf
 
 
 The above analysis shows that if we exclude sequences with indels (which we plan to do among our consensus sequences), then the accuracy of each CCS is around 99%. 
@@ -2228,7 +2230,15 @@ We make the plot for both all variants and single-mutant / wildtype variants:
 for variant_type in ['all', 'single']:
     p = variants.plotMutFreqs(variant_type, mut_type='codon', samples=None)
     p.draw()
+    plotfile = os.path.join(config['figs_dir'], f"avg_muts_per_variant_"+background+'_'+variant_type+".pdf")
+    print(f"Saving plot to {plotfile}")
+    p.save(plotfile)
+    
 ```
+
+    Saving plot to results/figures/avg_muts_per_variant_BQ11_all.pdf
+    Saving plot to results/figures/avg_muts_per_variant_BQ11_single.pdf
+
 
 We can also use heat maps to examine the extent to which specific amino-acid or codon mutations are over-represented.
 These heat maps are large, so we make them just for all variants and the merge of all libraries:

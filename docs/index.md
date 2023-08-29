@@ -24,4 +24,4 @@ We have made two tools to help visualize the data from our deep mutational scans
 
 ### Data
 
-If you are interested in the raw data from our study, you can find the ACE2-binding affinity (-log10 $$K\_D$$) and RBD expression (log10(MFI)) measurements from each experiment [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/final_variant_scores/final_variant_scores.csv). You can find the data used to plot the epistatic shifts between variant backgrounds [here](https://github.com/jbloomlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/epistatic_shifts/JSD_by_target.csv).
+If you are interested in the raw data from our study, you can find the ACE2-binding affinity (-log10 $$K\_D$$) and RBD expression (log10(MFI)) measurements from each experiment [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/final_variant_scores/final_variant_scores.csv). You can find the data used to plot the epistatic shifts between variant backgrounds [here](https://github.com/tstarrlab/SARS-CoV-2-RBD_DMS_Omicron-XBB-BQ/blob/main/results/epistatic_shifts/JSD_by_target.csv).

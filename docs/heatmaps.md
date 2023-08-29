@@ -5,8 +5,6 @@ permalink: /RBD-heatmaps/
 
 ---
 
-**NOTE: data for Omicron XBB.1.5 and BQ.1.1 are preliminary and _will_ change at least one more time with more sequencing depth**
-
 ### Overview
 
 You can use this tool to explore the experimentally determined impacts of amino acid mutations on ACE2-binding affinity and expression in SARS-CoV-2 receptor-binding domain (RBD) variants.

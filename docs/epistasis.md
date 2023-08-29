@@ -5,7 +5,6 @@ permalink: /epistatic-shifts/
 
 ---
 
-**NOTE: data for Omicron XBB.1.5 and BQ.1.1 are preliminary and _will_ change at least one more time with more sequencing depth**
 
 ### Overview 
 

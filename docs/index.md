@@ -5,8 +5,6 @@
 layout: default
 ---
 
-**NOTE: data for Omicron XBB.1.5 and BQ.1.1 are preliminary and _will_ change at least one more time with more sequencing depth**
-
 ## Overview 
 
 We performed deep mutational scans to measure the impact on ACE2 binding of all single amino-acid mutations in the Omicron BQ.1.1 and XBB.1.5 variant RBDs, and compare mutational effects to those in previously queried SARS-CoV-2 variants Wuhan-Hu-1, Eta, Alpha, Beta, Delta, Omicron BA.1, and BA.2 from previously published studies [here](https://www.science.org/doi/10.1126/science.abo7896) and [here](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1010951).

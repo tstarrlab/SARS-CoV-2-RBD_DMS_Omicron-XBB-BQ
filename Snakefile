@@ -25,7 +25,7 @@ localrules: make_dag,
             get_ccs,
             get_BA2_bc_lookup,
             get_mut_antibody_escape,
-            get_mut_bind_expr
+            get_mut_bind_expr,
             get_SARSr_DMS
 
 # Functions -------------------------------------------------------------------

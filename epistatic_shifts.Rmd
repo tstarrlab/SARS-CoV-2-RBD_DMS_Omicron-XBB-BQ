@@ -13,7 +13,7 @@ This notebook analyzes sites whose mutation effects deviate most strongly among 
 
 ```{r setup, message=FALSE, warning=FALSE, error=FALSE}
 #list of packages to install/load
-packages = c("yaml","data.table","tidyverse","gridExtra","grid","bio3d","ggridges","ggrepel","GGally")
+packages = c("yaml","data.table","tidyverse","gridExtra","grid","bio3d","ggridges","ggrepel","GGally","viridis")
 #install any packages not already installed
 installed_packages <- packages %in% rownames(installed.packages())
 if(any(installed_packages == F)){
@@ -203,7 +203,7 @@ plot_scatter <- function(site, bg1, bg2, JSD=F, JSD_min3bc=T, JSD_min5bc=F,n_bc_
   x_min5bc <- dt[target==bg1 & position==site,get(paste(phenotype,"_min5bc",sep=""))]
   y_min5bc <- dt[target==bg2 & position==site,get(paste(phenotype,"_min5bc",sep=""))]
   chars <- dt[target==bg1 & position==site,mutant]
-  cols <- rep("black",20); cols[which(x_n_bc < n_bc_cutoff | y_n_bc < n_bc_cutoff)] <- "orange"
+  cols <- rep("black",21); cols[which(x_n_bc < n_bc_cutoff | y_n_bc < n_bc_cutoff)] <- "orange"
   plot(x,y, xlim=if(phenotype=="bind"){c(4.5,12)}else{c(5.5,11)},ylim=if(phenotype=="bind"){c(4.5,12)}else{c(5.5,11)},pch=chars,xlab=paste(bg1,phenotype),ylab=paste(bg2,phenotype),col=cols,main=paste("site",site))
   abline(v=x_ref,lty=2,col="red")
   abline(h=y_ref,lty=2,col="red")
@@ -597,95 +597,8 @@ for(s in unique(dt$target)){
 }
 ```
 
-Entrenchment plots, if desired
 
-For each position that varies between WH1 and BA.1 and BA.2, make little plots that illustrate epistasis of the substitution itself to show entrenchment and anti-entrenchment
-
-```{r entrenchment_Omicron_BA1, fig.width=7.5, fig.height=12.5, fig.align="center", dpi=300,dev="png"}
-# entrench_BA1 <- data.table(site=NA,WH1_wt=NA,BA1_wt=NA,WH1_wt_bind=NA,WH1_mut_bind=NA,BA1_revert_bind=NA,BA1_wt_bind=NA)
-# 
-# for(pos in unique(dt$position)){
-#   WH1_wt <- dt[target=="Wuhan-Hu-1_v2" & wildtype==mutant & position==pos,wildtype]
-#   BA1_wt <- dt[target=="Omicron_BA1" & wildtype==mutant & position==pos,wildtype]
-#   if(WH1_wt != BA1_wt){
-#     entrench_BA1 <- rbind(entrench_BA1, 
-#                           list(site=pos,
-#                                WH1_wt=WH1_wt,
-#                                BA1_wt=BA1_wt,
-#                                WH1_wt_bind=dt[target=="Wuhan-Hu-1_v2" & position==pos & mutant==WH1_wt,bind],
-#                                WH1_mut_bind=dt[target=="Wuhan-Hu-1_v2" & position==pos & mutant==BA1_wt,bind],
-#                                BA1_revert_bind=dt[target=="Omicron_BA1" & position==pos & mutant==WH1_wt,bind],
-#                                BA1_wt_bind=dt[target=="Omicron_BA1" & position==pos & mutant==BA1_wt,bind]
-#                                )
-#                           )
-#   }
-# }
-# entrench_BA1 <- entrench_BA1[-1,]
-# 
-# par(mfrow=c(5,3))
-# for(i in 1:nrow(entrench_BA1)){
-#   plot(1:4, 
-#        entrench_BA1[i,4:7],
-#        main=paste(entrench_BA1[i,c(2,1,3)],collapse=""),
-#        pch=16,cex=2,
-#        col=c(cbbPalette[1],cbbPalette[1],cbbPalette[2],cbbPalette[2]),
-#        xlim=c(0.75, 4.25), ylim=c(6,10.5),
-#        ylab="ACE2 affinity (-log10Kd)",
-#        xlab="amino acid",
-#        xaxt="n")
-#   axis(1, at=1:4, labels=c("WH1", "WH1+\nmut","BA.1+\nrevert","BA.1"))
-#   points(1:2, entrench_BA1[i,4:5],type="l",lwd=1.5)
-#   points(3:4, entrench_BA1[i,6:7],type="l",lwd=1.5,col=cbbPalette[2])
-# }
-# 
-# invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/entrenchment_diagrams_BA1.pdf",sep=""),useDingbats=F))
-
-```
-
-
-
-```{r entrenchment_Omicron_BA2, fig.width=7.5, fig.height=15, fig.align="center", dpi=300,dev="png"}
-# entrench_BA2 <- data.table(site=NA,WH1_wt=NA,BA2_wt=NA,WH1_wt_bind=NA,WH1_mut_bind=NA,BA2_revert_bind=NA,BA2_wt_bind=NA)
-# 
-# for(pos in unique(dt$position)){
-#   WH1_wt <- dt[target=="Wuhan-Hu-1_v2" & wildtype==mutant & position==pos,wildtype]
-#   BA2_wt <- dt[target=="Omicron_BA2" & wildtype==mutant & position==pos,wildtype]
-#   if(WH1_wt != BA2_wt){
-#     entrench_BA2 <- rbind(entrench_BA2, 
-#                           list(site=pos,
-#                                WH1_wt=WH1_wt,
-#                                BA2_wt=BA2_wt,
-#                                WH1_wt_bind=dt[target=="Wuhan-Hu-1_v2" & position==pos & mutant==WH1_wt,bind],
-#                                WH1_mut_bind=dt[target=="Wuhan-Hu-1_v2" & position==pos & mutant==BA2_wt,bind],
-#                                BA2_revert_bind=dt[target=="Omicron_BA2" & position==pos & mutant==WH1_wt,bind],
-#                                BA2_wt_bind=dt[target=="Omicron_BA2" & position==pos & mutant==BA2_wt,bind]
-#                                )
-#                           )
-#   }
-# }
-# entrench_BA2 <- entrench_BA2[-1,]
-# 
-# par(mfrow=c(6,3))
-# for(i in 1:nrow(entrench_BA2)){
-#   plot(1:4, 
-#        entrench_BA2[i,4:7],
-#        main=paste(entrench_BA2[i,c(2,1,3)],collapse=""),
-#        pch=16,cex=2,
-#        col=c(cbbPalette[1],cbbPalette[1],cbbPalette[8],cbbPalette[8]),
-#        xlim=c(0.75, 4.25), ylim=c(6,10.5),
-#        ylab="ACE2 affinity (-log10Kd)",
-#        xlab="",
-#        xaxt="n")
-#   axis(1, at=1:4, labels=c("WH1", "WH1+\nmut","BA.2+\nrevert","BA.2"))
-#   points(1:2, entrench_BA2[i,4:5],type="l",lwd=1.5)
-#   points(3:4, entrench_BA2[i,6:7],type="l",lwd=1.5,col=cbbPalette[8])
-# }
-# 
-# invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/entrenchment_diagrams_BA2.pdf",sep=""),useDingbats=F))
-
-```
-
-## Multidimensional scaling of epistatic drift
+## Multidimensional scaling visualization of epistatic drift
 
 Want to use MDS to plot trajectory of epistatic drift among all pairs of variants. The goal of this is to illustrate in 2D the distance in vectors of mutational effects between each pair of variants that we've profiled. We will do this by deriving a "complete" epistatic shift metric between each pair of variants that integrates across all sites, and use this as the dissimilarity metric for MDS projection. We could also do this on a site-by-site basis if we wanted to illustrate how different sites show different patterns in their epistatic drift
 
@@ -827,3 +740,52 @@ ggplot(data=temp_WH1, aes(x=site, y=JSD_min3bc^3, color=target))+
 
 invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/JSD_v_WH1_min3bc_faceted_cube.pdf",sep=""),useDingbats=F))
 ```
+
+
+Let's use RMS -- looks good and also procedurally the easiest to explain. Let's color points by key features?
+
+```{r color-MDS-by-divergence, fig.width=4.5, fig.height=4, fig.align="center", dpi=300,dev="png"}
+
+mds_RMS$seq_diff <- c(22, 20, 16, 15, 2, 1, 3, 1, 0, 25) #SARS1 is 52 differences but I'll collapse scale to >=25
+
+p_RMS_seq_dissim <- ggplot(data=mds_RMS, aes(x = Dim.2, y = Dim.1, color = seq_diff))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("RMS")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))+
+  scale_color_viridis_c()  # Apply the viridis color scale
+
+p_RMS_seq_dissim
+
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/MDS-scatter_color-by-seq-similarity.pdf",sep=""),useDingbats=F))
+
+```
+
+What about antigenic distances? I extracted the antigenic distances reported in Haagmans lab antigenic cartography based on immunization and serum neuts from a hamster model in [this paper](https://www.thelancet.com/journals/lanmic/article/PIIS2666-5247(22)00384-6/fulltext#%20) and PCA of serum neuts from Yunlong Cao in [this paper](https://www.nature.com/articles/s41586-022-05644-7). I extracted values, transformed the Cao measurements by the linear trendline linking the two measurement sets (R2 ~ 0.87), and averaged the two measurements. Eta (truly Zeta) and SARS1 were only measured each in one of the two datasets (Eta in Haagmans, SARS1 in Cao). Also note, XBB.1.5 is data from XBB.1 alone, not the .5 derivative.
+
+```{r color-MDS-by-antigenicity, fig.width=4.5, fig.height=4, fig.align="center", dpi=300,dev="png"}
+
+mds_RMS$antigenic_diff <- c(15.515, 15.645, 8.206, 9.326, 2.766, 4.166, 1.795, 2.076, 0, 14.908)
+
+p_RMS_antigenic_dissim <- ggplot(data=mds_RMS, aes(x = Dim.2, y = Dim.1, color = antigenic_diff))+
+  geom_point(size=5)+
+  geom_text_repel(aes(label=label))+
+  xlab("")+
+  ylab("")+
+  theme_classic()+
+  ggtitle("RMS")+
+  theme_void()+
+  theme(panel.border=element_rect(color="black",fill=NA,linewidth=1))+
+  scale_color_viridis_c(option="plasma")  # Apply the viridis color scale
+
+p_RMS_antigenic_dissim
+
+invisible(dev.print(pdf, paste(config$epistatic_shifts_dir,"/MDS-scatter_color-by-antigenic-distance.pdf",sep=""),useDingbats=F))
+
+```
+
+

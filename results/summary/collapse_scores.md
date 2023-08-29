@@ -625,9 +625,10 @@ invisible(dev.print(pdf, paste(config$final_variant_scores_dir,"/heatmap_SSM_del
 
 ## Comparing deletion effects to mutations
 
-Output PDBs colored by the impact of deletion
+Output PDBs colored by the impact of deletion and average amino acid
+mutation
 
-First, map each to 6m0j structure
+First, map del effects each to 6m0j structure
 
 ``` r
 pdb_wh1 <- read.pdb(file=config$pdb_6m0j)
@@ -636,7 +637,7 @@ pdb_wh1 <- read.pdb(file=config$pdb_6m0j)
     ##    PDB has ALT records, taking A only, rm.alt=TRUE
 
 ``` r
-#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+#iterate through backgrounds, output a pdb with del effects
 for(s in c("Omicron_XBB15","Omicron_BQ11")){
   b <- rep(0, length(pdb_wh1$atom$b))
   for(i in 1:nrow(pdb_wh1$atom)){
@@ -644,11 +645,30 @@ for(s in c("Omicron_XBB15","Omicron_BQ11")){
       res <- pdb_wh1$atom$resno[i]
       del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
       if(length(del)>0){
-        b[i] <- del
+        if(!is.na(del)){
+          b[i] <- del
+        }
       }
     }
   }
   write.pdb(pdb=pdb_wh1, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_WH1-structure.pdb",sep=""), b=b)
+}
+
+#iterate through backgrounds, output a pdb with sub effects
+for(s in c("Omicron_XBB15","Omicron_BQ11")){
+  b <- rep(0, length(pdb_wh1$atom$b))
+  for(i in 1:nrow(pdb_wh1$atom)){
+    if(pdb_wh1$atom$chain[i]=="E"){
+      res <- pdb_wh1$atom$resno[i]
+      sub <- median(dt_final[position==res & target==s & wildtype!=mutant & mutant!= "-",delta_bind],na.rm=T)
+      if(length(sub)>0){
+        if(!is.na(sub)){
+          b[i] <- sub
+        }
+      }
+    }
+  }
+  write.pdb(pdb=pdb_wh1, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_sub-effects_WH1-structure.pdb",sep=""), b=b)
 }
 ```
 
@@ -657,38 +677,77 @@ Also map each to its own BQ/XBB structure
 ``` r
 pdb_bq11 <- read.pdb(file=config$pdb_8if2)
 
-#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+#iterate through backgrounds, output a pdb with del effects
 for(s in c("Omicron_BQ11")){
   b <- rep(0, length(pdb_bq11$atom$b))
   for(i in 1:nrow(pdb_bq11$atom)){
-    if(pdb_bq11$atom$chain[i]=="E"){
+    if(pdb_bq11$atom$chain[i]=="B"){
       res <- pdb_bq11$atom$resno[i]
       del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
       if(length(del)>0){
-        b[i] <- del
+        if(!is.na(del)){
+          b[i] <- del
+        }
       }
     }
   }
   write.pdb(pdb=pdb_bq11, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_bq11-structure.pdb",sep=""), b=b)
+}
+
+#iterate through backgrounds, output a pdb with sub effects
+for(s in c("Omicron_BQ11")){
+  b <- rep(0, length(pdb_bq11$atom$b))
+  for(i in 1:nrow(pdb_bq11$atom)){
+    if(pdb_bq11$atom$chain[i]=="B"){
+      res <- pdb_bq11$atom$resno[i]
+      sub <- median(dt_final[position==res & target==s & wildtype!=mutant & mutant!= "-",delta_bind],na.rm=T)
+      if(length(sub)>0){
+        if(!is.na(sub)){
+          b[i] <- sub
+        }
+      }
+    }
+  }
+  write.pdb(pdb=pdb_bq11, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_sub-effects_bq11-structure.pdb",sep=""), b=b)
 }
 ```
 
 ``` r
 pdb_xbb15 <- read.pdb(file=config$pdb_8iov)
 
-#iterate through backgrounds, output a pdb comparing its divergence to WH1 (using min3bc)
+#iterate through backgrounds, output a pdb with del effects
 for(s in c("Omicron_XBB15")){
   b <- rep(0, length(pdb_xbb15$atom$b))
   for(i in 1:nrow(pdb_xbb15$atom)){
-    if(pdb_xbb15$atom$chain[i]=="E"){
+    if(pdb_xbb15$atom$chain[i]=="B"){
       res <- pdb_xbb15$atom$resno[i]
       del <- dt_final[target==s & position==res & mutant=="-", delta_bind]
       if(length(del)>0){
-        b[i] <- del
+        if(!is.na(del)){
+          b[i] <- del
+        }
       }
     }
   }
   write.pdb(pdb=pdb_xbb15, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_del-effects_xbb15-structure.pdb",sep=""), b=b)
+}
+
+
+#iterate through backgrounds, output a pdb with sub effects
+for(s in c("Omicron_XBB15")){
+  b <- rep(0, length(pdb_xbb15$atom$b))
+  for(i in 1:nrow(pdb_xbb15$atom)){
+    if(pdb_xbb15$atom$chain[i]=="B"){
+      res <- pdb_xbb15$atom$resno[i]
+      sub <- median(dt_final[position==res & target==s & wildtype!=mutant & mutant!= "-",delta_bind],na.rm=T)
+      if(length(sub)>0){
+        if(!is.na(sub)){
+          b[i] <- sub
+        }
+      }
+    }
+  }
+  write.pdb(pdb=pdb_xbb15, file=paste(config$final_variant_scores_dir,"/pdbs/",s,"_sub-effects_xbb15-structure.pdb",sep=""), b=b)
 }
 ```
 
@@ -824,7 +883,7 @@ wilcox.test(dels_df[class=="all deletions",delta_bind],dels_df[class=="deletions
     ## W = 1369, p-value = 0.4529
     ## alternative hypothesis: true location shift is not equal to 0
 
-Compare effects of mutations to effects of deletions.
+Compare effects of mutations to effects of deletions for XBB data.
 
 ``` r
 temp <- data.table(site=331:531,median_sub=as.numeric(NA),min_sub=as.numeric(NA),del=as.numeric(NA))
@@ -847,13 +906,18 @@ p2 <- ggplot(data=temp, aes(y=min_sub, x=del))+
   theme_classic()+
   ylab("minimum effect on ACE2 binding of amino acid mutation at site")+
   xlab("effect on ACE2 binding of deletion at site")+
-  geom_abline(slope=1, intercept = 0, linetype = 'dotted',color="red")
+  geom_abline(slope=1, intercept = 0, linetype = 'dotted',color="red")+
+  #geom_text_repel(aes(label=ifelse((min_sub < -3 & del > -2),as.character(site),'')),size=3)+
+  geom_text_repel(aes(label=ifelse((min_sub < -3 & del > -2.5),as.character(site),'')),size=3)
+  
 
 grid.arrange(p1,p2,nrow=1)
 ```
 
     ## Warning: Removed 8 rows containing missing values (`geom_point()`).
     ## Removed 8 rows containing missing values (`geom_point()`).
+
+    ## Warning: Removed 8 rows containing missing values (`geom_text_repel()`).
 
 <img src="collapse_scores_files/figure-gfm/compare_effects_dels_subs-1.png" style="display: block; margin: auto;" />
 

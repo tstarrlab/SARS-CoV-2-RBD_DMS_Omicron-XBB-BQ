@@ -554,6 +554,9 @@ display(HTML(
     .aggregate(n_sequences=pd.NamedAgg('seqrecord', 'count'))
     .to_html()
     ))
+
+
+spikes_df = spikes_df.query('~excess_ambiguous')
 ```
 
     Filtering sequences with > 0 ambiguous residues
@@ -1419,466 +1422,6 @@ assert len(aligned_rbds) == len(spikes_df)
     Now aligning these sequences...
     Alignment complete.
     
-    Writing spikes 9550001 to 9600000 to results/GISAID_mutations/human_full-length_spikes_9550001-to-9600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9600001 to 9650000 to results/GISAID_mutations/human_full-length_spikes_9600001-to-9650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9650001 to 9700000 to results/GISAID_mutations/human_full-length_spikes_9650001-to-9700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9700001 to 9750000 to results/GISAID_mutations/human_full-length_spikes_9700001-to-9750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9750001 to 9800000 to results/GISAID_mutations/human_full-length_spikes_9750001-to-9800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9800001 to 9850000 to results/GISAID_mutations/human_full-length_spikes_9800001-to-9850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9850001 to 9900000 to results/GISAID_mutations/human_full-length_spikes_9850001-to-9900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9900001 to 9950000 to results/GISAID_mutations/human_full-length_spikes_9900001-to-9950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 9950001 to 10000000 to results/GISAID_mutations/human_full-length_spikes_9950001-to-10000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10000001 to 10050000 to results/GISAID_mutations/human_full-length_spikes_10000001-to-10050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10050001 to 10100000 to results/GISAID_mutations/human_full-length_spikes_10050001-to-10100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10100001 to 10150000 to results/GISAID_mutations/human_full-length_spikes_10100001-to-10150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10150001 to 10200000 to results/GISAID_mutations/human_full-length_spikes_10150001-to-10200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10200001 to 10250000 to results/GISAID_mutations/human_full-length_spikes_10200001-to-10250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10250001 to 10300000 to results/GISAID_mutations/human_full-length_spikes_10250001-to-10300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10300001 to 10350000 to results/GISAID_mutations/human_full-length_spikes_10300001-to-10350000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10350001 to 10400000 to results/GISAID_mutations/human_full-length_spikes_10350001-to-10400000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10400001 to 10450000 to results/GISAID_mutations/human_full-length_spikes_10400001-to-10450000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10450001 to 10500000 to results/GISAID_mutations/human_full-length_spikes_10450001-to-10500000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10500001 to 10550000 to results/GISAID_mutations/human_full-length_spikes_10500001-to-10550000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10550001 to 10600000 to results/GISAID_mutations/human_full-length_spikes_10550001-to-10600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10600001 to 10650000 to results/GISAID_mutations/human_full-length_spikes_10600001-to-10650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10650001 to 10700000 to results/GISAID_mutations/human_full-length_spikes_10650001-to-10700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10700001 to 10750000 to results/GISAID_mutations/human_full-length_spikes_10700001-to-10750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10750001 to 10800000 to results/GISAID_mutations/human_full-length_spikes_10750001-to-10800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10800001 to 10850000 to results/GISAID_mutations/human_full-length_spikes_10800001-to-10850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10850001 to 10900000 to results/GISAID_mutations/human_full-length_spikes_10850001-to-10900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10900001 to 10950000 to results/GISAID_mutations/human_full-length_spikes_10900001-to-10950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 10950001 to 11000000 to results/GISAID_mutations/human_full-length_spikes_10950001-to-11000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11000001 to 11050000 to results/GISAID_mutations/human_full-length_spikes_11000001-to-11050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11050001 to 11100000 to results/GISAID_mutations/human_full-length_spikes_11050001-to-11100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11100001 to 11150000 to results/GISAID_mutations/human_full-length_spikes_11100001-to-11150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11150001 to 11200000 to results/GISAID_mutations/human_full-length_spikes_11150001-to-11200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11200001 to 11250000 to results/GISAID_mutations/human_full-length_spikes_11200001-to-11250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11250001 to 11300000 to results/GISAID_mutations/human_full-length_spikes_11250001-to-11300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11300001 to 11350000 to results/GISAID_mutations/human_full-length_spikes_11300001-to-11350000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11350001 to 11400000 to results/GISAID_mutations/human_full-length_spikes_11350001-to-11400000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11400001 to 11450000 to results/GISAID_mutations/human_full-length_spikes_11400001-to-11450000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11450001 to 11500000 to results/GISAID_mutations/human_full-length_spikes_11450001-to-11500000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11500001 to 11550000 to results/GISAID_mutations/human_full-length_spikes_11500001-to-11550000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11550001 to 11600000 to results/GISAID_mutations/human_full-length_spikes_11550001-to-11600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11600001 to 11650000 to results/GISAID_mutations/human_full-length_spikes_11600001-to-11650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11650001 to 11700000 to results/GISAID_mutations/human_full-length_spikes_11650001-to-11700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11700001 to 11750000 to results/GISAID_mutations/human_full-length_spikes_11700001-to-11750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11750001 to 11800000 to results/GISAID_mutations/human_full-length_spikes_11750001-to-11800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11800001 to 11850000 to results/GISAID_mutations/human_full-length_spikes_11800001-to-11850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11850001 to 11900000 to results/GISAID_mutations/human_full-length_spikes_11850001-to-11900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11900001 to 11950000 to results/GISAID_mutations/human_full-length_spikes_11900001-to-11950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 11950001 to 12000000 to results/GISAID_mutations/human_full-length_spikes_11950001-to-12000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12000001 to 12050000 to results/GISAID_mutations/human_full-length_spikes_12000001-to-12050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12050001 to 12100000 to results/GISAID_mutations/human_full-length_spikes_12050001-to-12100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12100001 to 12150000 to results/GISAID_mutations/human_full-length_spikes_12100001-to-12150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12150001 to 12200000 to results/GISAID_mutations/human_full-length_spikes_12150001-to-12200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12200001 to 12250000 to results/GISAID_mutations/human_full-length_spikes_12200001-to-12250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12250001 to 12300000 to results/GISAID_mutations/human_full-length_spikes_12250001-to-12300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12300001 to 12350000 to results/GISAID_mutations/human_full-length_spikes_12300001-to-12350000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12350001 to 12400000 to results/GISAID_mutations/human_full-length_spikes_12350001-to-12400000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12400001 to 12450000 to results/GISAID_mutations/human_full-length_spikes_12400001-to-12450000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12450001 to 12500000 to results/GISAID_mutations/human_full-length_spikes_12450001-to-12500000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12500001 to 12550000 to results/GISAID_mutations/human_full-length_spikes_12500001-to-12550000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12550001 to 12600000 to results/GISAID_mutations/human_full-length_spikes_12550001-to-12600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12600001 to 12650000 to results/GISAID_mutations/human_full-length_spikes_12600001-to-12650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12650001 to 12700000 to results/GISAID_mutations/human_full-length_spikes_12650001-to-12700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12700001 to 12750000 to results/GISAID_mutations/human_full-length_spikes_12700001-to-12750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12750001 to 12800000 to results/GISAID_mutations/human_full-length_spikes_12750001-to-12800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12800001 to 12850000 to results/GISAID_mutations/human_full-length_spikes_12800001-to-12850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12850001 to 12900000 to results/GISAID_mutations/human_full-length_spikes_12850001-to-12900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12900001 to 12950000 to results/GISAID_mutations/human_full-length_spikes_12900001-to-12950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 12950001 to 13000000 to results/GISAID_mutations/human_full-length_spikes_12950001-to-13000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13000001 to 13050000 to results/GISAID_mutations/human_full-length_spikes_13000001-to-13050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13050001 to 13100000 to results/GISAID_mutations/human_full-length_spikes_13050001-to-13100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13100001 to 13150000 to results/GISAID_mutations/human_full-length_spikes_13100001-to-13150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13150001 to 13200000 to results/GISAID_mutations/human_full-length_spikes_13150001-to-13200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13200001 to 13250000 to results/GISAID_mutations/human_full-length_spikes_13200001-to-13250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13250001 to 13300000 to results/GISAID_mutations/human_full-length_spikes_13250001-to-13300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13300001 to 13350000 to results/GISAID_mutations/human_full-length_spikes_13300001-to-13350000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13350001 to 13400000 to results/GISAID_mutations/human_full-length_spikes_13350001-to-13400000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13400001 to 13450000 to results/GISAID_mutations/human_full-length_spikes_13400001-to-13450000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13450001 to 13500000 to results/GISAID_mutations/human_full-length_spikes_13450001-to-13500000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13500001 to 13550000 to results/GISAID_mutations/human_full-length_spikes_13500001-to-13550000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13550001 to 13600000 to results/GISAID_mutations/human_full-length_spikes_13550001-to-13600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13600001 to 13650000 to results/GISAID_mutations/human_full-length_spikes_13600001-to-13650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13650001 to 13700000 to results/GISAID_mutations/human_full-length_spikes_13650001-to-13700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13700001 to 13750000 to results/GISAID_mutations/human_full-length_spikes_13700001-to-13750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13750001 to 13800000 to results/GISAID_mutations/human_full-length_spikes_13750001-to-13800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13800001 to 13850000 to results/GISAID_mutations/human_full-length_spikes_13800001-to-13850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13850001 to 13900000 to results/GISAID_mutations/human_full-length_spikes_13850001-to-13900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13900001 to 13950000 to results/GISAID_mutations/human_full-length_spikes_13900001-to-13950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 13950001 to 14000000 to results/GISAID_mutations/human_full-length_spikes_13950001-to-14000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14000001 to 14050000 to results/GISAID_mutations/human_full-length_spikes_14000001-to-14050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14050001 to 14100000 to results/GISAID_mutations/human_full-length_spikes_14050001-to-14100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14100001 to 14150000 to results/GISAID_mutations/human_full-length_spikes_14100001-to-14150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14150001 to 14200000 to results/GISAID_mutations/human_full-length_spikes_14150001-to-14200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14200001 to 14250000 to results/GISAID_mutations/human_full-length_spikes_14200001-to-14250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14250001 to 14300000 to results/GISAID_mutations/human_full-length_spikes_14250001-to-14300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14300001 to 14350000 to results/GISAID_mutations/human_full-length_spikes_14300001-to-14350000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14350001 to 14400000 to results/GISAID_mutations/human_full-length_spikes_14350001-to-14400000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14400001 to 14450000 to results/GISAID_mutations/human_full-length_spikes_14400001-to-14450000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14450001 to 14500000 to results/GISAID_mutations/human_full-length_spikes_14450001-to-14500000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14500001 to 14550000 to results/GISAID_mutations/human_full-length_spikes_14500001-to-14550000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14550001 to 14600000 to results/GISAID_mutations/human_full-length_spikes_14550001-to-14600000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14600001 to 14650000 to results/GISAID_mutations/human_full-length_spikes_14600001-to-14650000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14650001 to 14700000 to results/GISAID_mutations/human_full-length_spikes_14650001-to-14700000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14700001 to 14750000 to results/GISAID_mutations/human_full-length_spikes_14700001-to-14750000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14750001 to 14800000 to results/GISAID_mutations/human_full-length_spikes_14750001-to-14800000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14800001 to 14850000 to results/GISAID_mutations/human_full-length_spikes_14800001-to-14850000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14850001 to 14900000 to results/GISAID_mutations/human_full-length_spikes_14850001-to-14900000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14900001 to 14950000 to results/GISAID_mutations/human_full-length_spikes_14900001-to-14950000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 14950001 to 15000000 to results/GISAID_mutations/human_full-length_spikes_14950001-to-15000000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15000001 to 15050000 to results/GISAID_mutations/human_full-length_spikes_15000001-to-15050000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15050001 to 15100000 to results/GISAID_mutations/human_full-length_spikes_15050001-to-15100000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15100001 to 15150000 to results/GISAID_mutations/human_full-length_spikes_15100001-to-15150000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15150001 to 15200000 to results/GISAID_mutations/human_full-length_spikes_15150001-to-15200000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15200001 to 15250000 to results/GISAID_mutations/human_full-length_spikes_15200001-to-15250000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
-    Writing spikes 15250001 to 15300000 to results/GISAID_mutations/human_full-length_spikes_15250001-to-15300000.fasta
-    Now aligning these sequences...
-    Alignment complete.
-    
 
 
 ## Parse / filter aligned RBDs
@@ -1925,7 +1468,7 @@ rbd_df = rbd_df.query('n_ambiguous == 0').query('n_gaps < 4')
 print(f"Retained {len(rbd_df)} RBDs.")
 ```
 
-    Retained 12353244 RBDs.
+    Retained 9534805 RBDs.
 
 
 Now get and plot the number of amino-acid mutations per RBD relative to the reference sequence, plotting on both a linear and log scale.
@@ -1966,7 +1509,7 @@ print(f"Writing alignment to {rbd_alignment_file}")
 _ = Bio.SeqIO.write(rbd_df['seqrecord'].tolist(), rbd_alignment_file, 'fasta')
 ```
 
-    Overall, there are 12348307 aligned RBDs that passed filters.
+    Overall, there are 9534805 aligned RBDs that passed filters.
     Writing alignment to results/GISAID_mutations/RBD_alignment.fasta
 
 
@@ -2017,135 +1560,135 @@ display(HTML(muts_df.head(n=15).to_html(index=False)))
       <td>478</td>
       <td>T</td>
       <td>K</td>
-      <td>9819123</td>
-      <td>2129</td>
-      <td>0.795180</td>
+      <td>7540416</td>
+      <td>1816</td>
+      <td>0.790831</td>
     </tr>
     <tr>
       <td>171</td>
       <td>501</td>
       <td>N</td>
       <td>Y</td>
-      <td>6956373</td>
-      <td>2297</td>
-      <td>0.563346</td>
-    </tr>
-    <tr>
-      <td>122</td>
-      <td>452</td>
-      <td>L</td>
-      <td>R</td>
-      <td>6402673</td>
-      <td>1816</td>
-      <td>0.518506</td>
+      <td>5769525</td>
+      <td>1977</td>
+      <td>0.605102</td>
     </tr>
     <tr>
       <td>147</td>
       <td>477</td>
       <td>S</td>
       <td>N</td>
-      <td>5709061</td>
-      <td>1772</td>
-      <td>0.462336</td>
+      <td>4756877</td>
+      <td>1549</td>
+      <td>0.498896</td>
+    </tr>
+    <tr>
+      <td>122</td>
+      <td>452</td>
+      <td>L</td>
+      <td>R</td>
+      <td>4705539</td>
+      <td>1535</td>
+      <td>0.493512</td>
     </tr>
     <tr>
       <td>43</td>
       <td>373</td>
       <td>S</td>
       <td>P</td>
-      <td>5641892</td>
-      <td>1662</td>
-      <td>0.456896</td>
-    </tr>
-    <tr>
-      <td>168</td>
-      <td>498</td>
-      <td>Q</td>
-      <td>R</td>
-      <td>5638727</td>
-      <td>1650</td>
-      <td>0.456640</td>
+      <td>4700064</td>
+      <td>1448</td>
+      <td>0.492938</td>
     </tr>
     <tr>
       <td>45</td>
       <td>375</td>
       <td>S</td>
       <td>F</td>
-      <td>5638703</td>
-      <td>1650</td>
-      <td>0.456638</td>
+      <td>4698365</td>
+      <td>1441</td>
+      <td>0.492759</td>
+    </tr>
+    <tr>
+      <td>168</td>
+      <td>498</td>
+      <td>Q</td>
+      <td>R</td>
+      <td>4697721</td>
+      <td>1441</td>
+      <td>0.492692</td>
     </tr>
     <tr>
       <td>175</td>
       <td>505</td>
       <td>Y</td>
       <td>H</td>
-      <td>5635513</td>
-      <td>1654</td>
-      <td>0.456379</td>
+      <td>4694990</td>
+      <td>1446</td>
+      <td>0.492405</td>
     </tr>
     <tr>
       <td>154</td>
       <td>484</td>
       <td>E</td>
       <td>A</td>
-      <td>5630712</td>
-      <td>1666</td>
-      <td>0.455991</td>
+      <td>4688796</td>
+      <td>1453</td>
+      <td>0.491756</td>
     </tr>
     <tr>
       <td>87</td>
       <td>417</td>
       <td>K</td>
       <td>N</td>
-      <td>5561051</td>
-      <td>1736</td>
-      <td>0.450349</td>
+      <td>4618482</td>
+      <td>1490</td>
+      <td>0.484381</td>
     </tr>
     <tr>
       <td>110</td>
       <td>440</td>
       <td>N</td>
       <td>K</td>
-      <td>5496099</td>
-      <td>1660</td>
-      <td>0.445089</td>
+      <td>4571885</td>
+      <td>1443</td>
+      <td>0.479494</td>
     </tr>
     <tr>
       <td>9</td>
       <td>339</td>
       <td>G</td>
       <td>D</td>
-      <td>5128487</td>
-      <td>1589</td>
-      <td>0.415319</td>
+      <td>4358988</td>
+      <td>1399</td>
+      <td>0.457166</td>
     </tr>
     <tr>
       <td>46</td>
       <td>376</td>
       <td>T</td>
       <td>A</td>
-      <td>4286538</td>
-      <td>1395</td>
-      <td>0.347136</td>
-    </tr>
-    <tr>
-      <td>75</td>
-      <td>405</td>
-      <td>D</td>
-      <td>N</td>
-      <td>4283743</td>
-      <td>1401</td>
-      <td>0.346909</td>
+      <td>3593659</td>
+      <td>1211</td>
+      <td>0.376899</td>
     </tr>
     <tr>
       <td>41</td>
       <td>371</td>
       <td>S</td>
       <td>F</td>
-      <td>4282796</td>
-      <td>1404</td>
-      <td>0.346833</td>
+      <td>3590740</td>
+      <td>1220</td>
+      <td>0.376593</td>
+    </tr>
+    <tr>
+      <td>75</td>
+      <td>405</td>
+      <td>D</td>
+      <td>N</td>
+      <td>3589854</td>
+      <td>1217</td>
+      <td>0.376500</td>
     </tr>
   </tbody>
 </table>

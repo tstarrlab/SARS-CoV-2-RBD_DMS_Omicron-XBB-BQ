@@ -200,6 +200,7 @@ rule collapse_scores:
         config['Titeseq_Kds_file'],
         config['expression_sortseq_file'],
         config['mut_bind_expr'],
+        config['gisaid_mutation_counts'],
     output:
         config['final_variant_scores_mut_file'],
         md='results/summary/collapse_scores.md',

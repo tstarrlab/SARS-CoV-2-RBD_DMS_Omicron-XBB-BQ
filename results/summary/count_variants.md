@@ -1186,12 +1186,12 @@ display(HTML(
   </thead>
   <tbody>
     <tr>
-      <td>pool2</td>
-      <td>334677</td>
-    </tr>
-    <tr>
       <td>pool1</td>
       <td>314804</td>
+    </tr>
+    <tr>
+      <td>pool2</td>
+      <td>334677</td>
     </tr>
   </tbody>
 </table>

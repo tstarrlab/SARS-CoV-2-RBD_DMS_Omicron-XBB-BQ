@@ -73,7 +73,7 @@ JSD_expr_file: results/epistatic_shifts/JSD_EXPRESSION_by_target.csv
 visualization_dir: docs/_includes
 
 gisaid_mutations_dir: results/GISAID_mutations
-gisaid_spikes: data/hCoV-19_spikeprot0702.tar.xz
+gisaid_spikes: data/hCoV-19_spikeprot1112.tar.xz
 gisaid_mutation_counts: results/GISAID_mutations/mutation_counts.csv
 
 

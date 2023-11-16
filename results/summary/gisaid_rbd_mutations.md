@@ -49,7 +49,7 @@ Read the spikes from the file downloaded from GISAID:
 
 ```python
 # Specify the name of the file within the tar
-file_name = "spikeprot0702/spikeprot0702.fasta"
+file_name = "spikeprot1112/spikeprot1112.fasta"
 
 # Open the compressed file as a tar archive
 with tarfile.open(config['gisaid_spikes'], "r:xz") as tar:
@@ -63,7 +63,7 @@ with tarfile.open(config['gisaid_spikes'], "r:xz") as tar:
 print(f"Read {len(spikes)} spike sequences.")
 ```
 
-    Read 15706458 spike sequences.
+    Read 16238458 spike sequences.
 
 
 Make a data frame that has the BioPython SeqRecord, length, host, and geographic location (country) for each spike.
@@ -112,11 +112,11 @@ spikes_df = spikes_df.query('host == "Human"')
   <tbody>
     <tr>
       <th>Human</th>
-      <td>15690249</td>
+      <td>16221151</td>
     </tr>
     <tr>
       <th>Environment</th>
-      <td>11377</td>
+      <td>12356</td>
     </tr>
     <tr>
       <th>Neovison vison</th>
@@ -124,7 +124,7 @@ spikes_df = spikes_df.query('host == "Human"')
     </tr>
     <tr>
       <th>Environmental</th>
-      <td>795</td>
+      <td>796</td>
     </tr>
     <tr>
       <th>Odocoileus virginianus</th>
@@ -132,19 +132,23 @@ spikes_df = spikes_df.query('host == "Human"')
     </tr>
     <tr>
       <th>unknown</th>
-      <td>180</td>
+      <td>196</td>
     </tr>
     <tr>
       <th>Felis catus</th>
-      <td>171</td>
+      <td>174</td>
     </tr>
     <tr>
       <th>Canis lupus familiaris</th>
-      <td>106</td>
+      <td>108</td>
     </tr>
     <tr>
       <th>Panthera leo</th>
       <td>77</td>
+    </tr>
+    <tr>
+      <th>Humano</th>
+      <td>76</td>
     </tr>
     <tr>
       <th>Hunan</th>
@@ -152,7 +156,7 @@ spikes_df = spikes_df.query('host == "Human"')
     </tr>
     <tr>
       <th>Mus musculus</th>
-      <td>52</td>
+      <td>62</td>
     </tr>
     <tr>
       <th>Neogale vison</th>
@@ -165,6 +169,10 @@ spikes_df = spikes_df.query('host == "Human"')
     <tr>
       <th>Cellculture</th>
       <td>32</td>
+    </tr>
+    <tr>
+      <th>Laboratory derived</th>
+      <td>30</td>
     </tr>
     <tr>
       <th>Neovision vision</th>
@@ -183,16 +191,12 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>20</td>
     </tr>
     <tr>
-      <th>Manis javanica</th>
+      <th>Mouse</th>
       <td>20</td>
     </tr>
     <tr>
-      <th>Mouse</th>
-      <td>19</td>
-    </tr>
-    <tr>
-      <th>Laboratory derived</th>
-      <td>19</td>
+      <th>Manis javanica</th>
+      <td>20</td>
     </tr>
     <tr>
       <th>canis lupus</th>
@@ -200,10 +204,6 @@ spikes_df = spikes_df.query('host == "Human"')
     </tr>
     <tr>
       <th>Panthera tigris jacksoni</th>
-      <td>13</td>
-    </tr>
-    <tr>
-      <th>Humano</th>
       <td>13</td>
     </tr>
     <tr>
@@ -235,16 +235,16 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>6</td>
     </tr>
     <tr>
+      <th>Human male</th>
+      <td>5</td>
+    </tr>
+    <tr>
       <th>P1 culture</th>
       <td>5</td>
     </tr>
     <tr>
       <th>Dog</th>
       <td>4</td>
-    </tr>
-    <tr>
-      <th>P2 culture</th>
-      <td>3</td>
     </tr>
     <tr>
       <th>Rhinolophus pusillus</th>
@@ -255,11 +255,31 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>3</td>
     </tr>
     <tr>
+      <th>mus musculus</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>P2 culture</th>
+      <td>3</td>
+    </tr>
+    <tr>
       <th>African Green Monkey</th>
       <td>3</td>
     </tr>
     <tr>
+      <th>Gorilla</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Chaetophractus villosus</th>
+      <td>3</td>
+    </tr>
+    <tr>
       <th>Control</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Human female</th>
       <td>3</td>
     </tr>
     <tr>
@@ -271,31 +291,7 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>3</td>
     </tr>
     <tr>
-      <th>Chaetophractus villosus</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>Gorilla</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>White tailed deer</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>Tiger</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>Tadarida brasiliensis</th>
-      <td>2</td>
-    </tr>
-    <tr>
       <th>Snow Leopard</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>Rhinolophus stheno</th>
       <td>2</td>
     </tr>
     <tr>
@@ -303,11 +299,11 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>2</td>
     </tr>
     <tr>
-      <th>Panthera tigris sondaica</th>
+      <th>Cultured cells</th>
       <td>2</td>
     </tr>
     <tr>
-      <th>Cultured cells</th>
+      <th>Panthera tigris sondaica</th>
       <td>2</td>
     </tr>
     <tr>
@@ -315,7 +311,27 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>2</td>
     </tr>
     <tr>
+      <th>Rhinolophus stheno</th>
+      <td>2</td>
+    </tr>
+    <tr>
       <th>Mustela putorius furo</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Tadarida brasiliensis</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Odocoileus hemionus</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Tiger</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>White tailed deer</th>
       <td>2</td>
     </tr>
     <tr>
@@ -323,15 +339,19 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>2</td>
     </tr>
     <tr>
-      <th>P3 culture</th>
+      <th>Rhinolophus bat</th>
       <td>1</td>
     </tr>
     <tr>
-      <th>Rhinolophus marshalli</th>
+      <th>Saimiri sciureus</th>
       <td>1</td>
     </tr>
     <tr>
-      <th>mink</th>
+      <th>Rhinolophus sinicus</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Canis lupus</th>
       <td>1</td>
     </tr>
     <tr>
@@ -339,7 +359,31 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>1</td>
     </tr>
     <tr>
+      <th>mink</th>
+      <td>1</td>
+    </tr>
+    <tr>
       <th>Arctictis binturong</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Rhinolophus marshalli</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Chlorocebus sabaeus</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Mus musculus (BALB/c mice)</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Rhinolophus affinis</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Otolemur garnettii</th>
       <td>1</td>
     </tr>
     <tr>
@@ -359,19 +403,7 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>1</td>
     </tr>
     <tr>
-      <th>Saimiri sciureus</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Rhinolophus sinicus</th>
-      <td>1</td>
-    </tr>
-    <tr>
       <th>Hippopotamus amphibius</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Canis lupus</th>
       <td>1</td>
     </tr>
     <tr>
@@ -379,15 +411,7 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>1</td>
     </tr>
     <tr>
-      <th>Panthera Leo</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Rhinolophus bat</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Rhinolophus affinis</th>
+      <th>Foreign</th>
       <td>1</td>
     </tr>
     <tr>
@@ -395,35 +419,11 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>1</td>
     </tr>
     <tr>
-      <th>Prionailurus viverrinus</th>
+      <th>P3 culture</th>
       <td>1</td>
     </tr>
     <tr>
-      <th>Prionailurus bengalensis euptilurus</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Chlorocebus sabaeus</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Mustela furo</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Crocuta crocuta</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Odocoileus hemionus</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Otolemur garnettii</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>Foreign</th>
+      <th>Panthera Leo</th>
       <td>1</td>
     </tr>
     <tr>
@@ -431,7 +431,19 @@ spikes_df = spikes_df.query('host == "Human"')
       <td>1</td>
     </tr>
     <tr>
-      <th>Mus musculus (BALB/c mice)</th>
+      <th>Mustela furo</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Prionailurus bengalensis euptilurus</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Prionailurus viverrinus</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>Crocuta crocuta</th>
       <td>1</td>
     </tr>
   </tbody>
@@ -517,11 +529,11 @@ spikes_df = spikes_df.query('valid_length')
   <tbody>
     <tr>
       <th>False</th>
-      <td>397074</td>
+      <td>408475</td>
     </tr>
     <tr>
       <th>True</th>
-      <td>15293175</td>
+      <td>15812676</td>
     </tr>
   </tbody>
 </table>
@@ -577,11 +589,11 @@ spikes_df = spikes_df.query('~excess_ambiguous')
   <tbody>
     <tr>
       <th>False</th>
-      <td>9534935</td>
+      <td>9811651</td>
     </tr>
     <tr>
       <th>True</th>
-      <td>5758240</td>
+      <td>6001025</td>
     </tr>
   </tbody>
 </table>
@@ -1422,6 +1434,30 @@ assert len(aligned_rbds) == len(spikes_df)
     Now aligning these sequences...
     Alignment complete.
     
+    Writing spikes 9550001 to 9600000 to results/GISAID_mutations/human_full-length_spikes_9550001-to-9600000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
+    Writing spikes 9600001 to 9650000 to results/GISAID_mutations/human_full-length_spikes_9600001-to-9650000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
+    Writing spikes 9650001 to 9700000 to results/GISAID_mutations/human_full-length_spikes_9650001-to-9700000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
+    Writing spikes 9700001 to 9750000 to results/GISAID_mutations/human_full-length_spikes_9700001-to-9750000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
+    Writing spikes 9750001 to 9800000 to results/GISAID_mutations/human_full-length_spikes_9750001-to-9800000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
+    Writing spikes 9800001 to 9850000 to results/GISAID_mutations/human_full-length_spikes_9800001-to-9850000.fasta
+    Now aligning these sequences...
+    Alignment complete.
+    
 
 
 ## Parse / filter aligned RBDs
@@ -1464,11 +1500,11 @@ Based on above plots, we will retain just RBDs with no ambiguous amino acids and
 
 
 ```python
-rbd_df = rbd_df.query('n_ambiguous == 0').query('n_gaps < 4')
+rbd_df = rbd_df.query('n_ambiguous == 0').query('n_gaps < 2')
 print(f"Retained {len(rbd_df)} RBDs.")
 ```
 
-    Retained 9534805 RBDs.
+    Retained 9811285 RBDs.
 
 
 Now get and plot the number of amino-acid mutations per RBD relative to the reference sequence, plotting on both a linear and log scale.
@@ -1509,7 +1545,7 @@ print(f"Writing alignment to {rbd_alignment_file}")
 _ = Bio.SeqIO.write(rbd_df['seqrecord'].tolist(), rbd_alignment_file, 'fasta')
 ```
 
-    Overall, there are 9534805 aligned RBDs that passed filters.
+    Overall, there are 9811285 aligned RBDs that passed filters.
     Writing alignment to results/GISAID_mutations/RBD_alignment.fasta
 
 
@@ -1560,135 +1596,135 @@ display(HTML(muts_df.head(n=15).to_html(index=False)))
       <td>478</td>
       <td>T</td>
       <td>K</td>
-      <td>7540416</td>
-      <td>1816</td>
-      <td>0.790831</td>
+      <td>7741846</td>
+      <td>1867</td>
+      <td>0.789076</td>
     </tr>
     <tr>
       <td>171</td>
       <td>501</td>
       <td>N</td>
       <td>Y</td>
-      <td>5769525</td>
-      <td>1977</td>
-      <td>0.605102</td>
+      <td>6033018</td>
+      <td>2032</td>
+      <td>0.614906</td>
     </tr>
     <tr>
       <td>147</td>
       <td>477</td>
       <td>S</td>
       <td>N</td>
-      <td>4756877</td>
-      <td>1549</td>
-      <td>0.498896</td>
-    </tr>
-    <tr>
-      <td>122</td>
-      <td>452</td>
-      <td>L</td>
-      <td>R</td>
-      <td>4705539</td>
-      <td>1535</td>
-      <td>0.493512</td>
+      <td>5018434</td>
+      <td>1610</td>
+      <td>0.511496</td>
     </tr>
     <tr>
       <td>43</td>
       <td>373</td>
       <td>S</td>
       <td>P</td>
-      <td>4700064</td>
-      <td>1448</td>
-      <td>0.492938</td>
+      <td>4961230</td>
+      <td>1498</td>
+      <td>0.505666</td>
     </tr>
     <tr>
       <td>45</td>
       <td>375</td>
       <td>S</td>
       <td>F</td>
-      <td>4698365</td>
-      <td>1441</td>
-      <td>0.492759</td>
+      <td>4959500</td>
+      <td>1491</td>
+      <td>0.505489</td>
     </tr>
     <tr>
       <td>168</td>
       <td>498</td>
       <td>Q</td>
       <td>R</td>
-      <td>4697721</td>
-      <td>1441</td>
-      <td>0.492692</td>
+      <td>4958896</td>
+      <td>1490</td>
+      <td>0.505428</td>
     </tr>
     <tr>
       <td>175</td>
       <td>505</td>
       <td>Y</td>
       <td>H</td>
-      <td>4694990</td>
-      <td>1446</td>
-      <td>0.492405</td>
+      <td>4955885</td>
+      <td>1495</td>
+      <td>0.505121</td>
     </tr>
     <tr>
       <td>154</td>
       <td>484</td>
       <td>E</td>
       <td>A</td>
-      <td>4688796</td>
-      <td>1453</td>
-      <td>0.491756</td>
+      <td>4948448</td>
+      <td>1502</td>
+      <td>0.504363</td>
     </tr>
     <tr>
       <td>87</td>
       <td>417</td>
       <td>K</td>
       <td>N</td>
-      <td>4618482</td>
-      <td>1490</td>
-      <td>0.484381</td>
+      <td>4875965</td>
+      <td>1542</td>
+      <td>0.496975</td>
     </tr>
     <tr>
       <td>110</td>
       <td>440</td>
       <td>N</td>
       <td>K</td>
-      <td>4571885</td>
-      <td>1443</td>
-      <td>0.479494</td>
+      <td>4831617</td>
+      <td>1495</td>
+      <td>0.492455</td>
+    </tr>
+    <tr>
+      <td>122</td>
+      <td>452</td>
+      <td>L</td>
+      <td>R</td>
+      <td>4745171</td>
+      <td>1564</td>
+      <td>0.483644</td>
     </tr>
     <tr>
       <td>9</td>
       <td>339</td>
       <td>G</td>
       <td>D</td>
-      <td>4358988</td>
-      <td>1399</td>
-      <td>0.457166</td>
+      <td>4407818</td>
+      <td>1412</td>
+      <td>0.449260</td>
     </tr>
     <tr>
       <td>46</td>
       <td>376</td>
       <td>T</td>
       <td>A</td>
-      <td>3593659</td>
-      <td>1211</td>
-      <td>0.376899</td>
+      <td>3850176</td>
+      <td>1267</td>
+      <td>0.392423</td>
     </tr>
     <tr>
       <td>41</td>
       <td>371</td>
       <td>S</td>
       <td>F</td>
-      <td>3590740</td>
-      <td>1220</td>
-      <td>0.376593</td>
+      <td>3847365</td>
+      <td>1276</td>
+      <td>0.392137</td>
     </tr>
     <tr>
       <td>75</td>
       <td>405</td>
       <td>D</td>
       <td>N</td>
-      <td>3589854</td>
-      <td>1217</td>
-      <td>0.376500</td>
+      <td>3846457</td>
+      <td>1273</td>
+      <td>0.392044</td>
     </tr>
   </tbody>
 </table>
